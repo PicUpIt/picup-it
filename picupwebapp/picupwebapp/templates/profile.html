@@ -1,0 +1,345 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block header %}
+<style type="text/css">
+.user-background {
+background-color: #fff;
+background: #456 url({% if picup_profile.profile_picture %}{{ picup_profile.profile_picture.picture_medium.url }}{% else %}{{galleries.0.picture_set.first.picture_medium.url}}{% endif %}) no-repeat;
+background-size:cover;
+}
+</style>
+{% endblock %}
+{% block quoteheader %}{% endblock %}
+{% block deer_picture %}{% endblock %}
+{% block head_js %}
+<!-- Piwik -->
+<script type="text/javascript">
+var _paq = _paq || [];
+_paq.push(["trackPageView"]);
+_paq.push(["enableLinkTracking"]);
+(function() {
+var u=(("https:" == document.location.protocol) ? "https" : "http") + "://s.glam.pl/";
+_paq.push(["setTrackerUrl", u+"piwik.php"]);
+_paq.push(["setSiteId", "2"]);
+var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+})();
+</script>
+<!-- End Piwik Code -->
+{% endblock head_js %}
+{% block body_js %}
+<script type="text/javascript" src="{% static "js/jquery.qrcode-0.7.0.min.js" %}" ></script>
+<script type="text/javascript" src="{% static "js/jquery-ui.min.js" %}"></script>
+<script type="text/javascript">
+$('#apiqrcode').qrcode({render: 'image',
+text:'{{ picup_profile.api_key }}',
+label:'{{picup_user.username}}'});
+$('#showModal').click(function() {
+$('#apiKeyModal').foundation('reveal', 'open');
+})
+$('#idGallerySave').click(function() {
+var $galleryName = $('#idGalleryName').val();
+$.post("{% url "intcall_gallery" %}", {'gallery_title':$galleryName, 'create':true},
+function (data){
+var obj = $.parseJSON(data);
+$('<tr><td><a href="/deerbox/gallery/'+ obj['id']+'" id="gallery' + obj['id'] + '">'+obj['title']+'</a></td><td>Unknown</td><td>Today</td><td>False</td></tr>').insertBefore('#idFoot');
+//$('#idGalleryList').append('<a href="/deerbox/gallery/'+ obj['id']+'" id="gallery' + obj['id'] + '" class="galleryButton button expand">'+obj['title']+'</a>');
+$('#galleryCreate').show();
+$('.createGallery').hide();
+$('#idGalleryName').val('');
+$('#idNoGalleries').html('');
+$('#gallery' + obj['id']).droppable({
+drop: function(event, ui) {
+var $picture_id = ui['draggable'].attr('value');
+$.post("{% url "intcall_gallery" %}", {
+'insert_picture':true,
+'gallery_id':  obj['id'],
+'picture_id': $picture_id});
+ui['draggable'].hide();
+}
+});
+}
+);
+});
+$('#galleryCreate').click( function()
+{
+$('#galleryCreate').hide();
+$('.createGallery').show();
+});
+$('#idUsernameSave').click(
+function(){
+
+$('#idUsernameShow').show();
+$('#idUsernameEdit').hide();
+var $username = $('#idUsernameInput').val();
+$.post("{% url "intcall_profile" %}", {'username':$username},
+function(data)
+{
+if (data=="OK"){
+$('#idUsernameShow').text($('#idUsernameInput').val());
+} else {
+alert("There was some error, perhaps username reserved / exists.")
+}
+});
+//$('#idUsernameShow').text($('#idUsernameInput').val());
+})
+$('#idUsernameShow').click(function(){
+$('#idUsernameShow').bind('click', function(e) {
+e.stopPropagation();
+});
+$(document).bind('click', function (e) {
+if(!$(e.target).is('#idUsernameShow')){
+$('#idUsernameShow').show();
+$('#idUsernameEdit').hide();}
+});
+$('#idUsernameShow').bind('click', function(e) {
+e.stopPropagation();
+});
+$('#idUsernameEdit').bind('click', function(e) {
+e.stopPropagation();
+});
+//$('#idUsernameShow').hide();
+$('#idUsernameEdit').show();
+})
+{% for gallery in galleries %}
+$('#gallery{{ gallery.id }}').droppable({
+drop: function(event, ui) {
+var $picture_id = ui['draggable'].attr('value');
+$.post("{% url "intcall_gallery" %}", {
+    'insert_picture':true,
+    'gallery_id': {{ gallery.id }},
+    'picture_id': $picture_id});
+    ui['draggable'].hide();
+    }
+});
+{% endfor %}
+{% for picture in pictures_all %}
+//$('#imgDiv{{forloop.counter}}').draggable({ revert: "valid" });
+$('#img{{forloop.counter}}').draggable({ revert: "invalid" });
+$('#img{{forloop.counter}}').click(function()
+{
+$.get("{% url "intcall_description" picture.id %}",function(data)
+{
+$('#idDesc{{forloop.counter}}').val(data);
+})
+})
+$('#saveButton{{forloop.counter}}').click(function()
+{
+var $text = $("#idDesc{{forloop.counter}}").val();
+var $gal = $("#selectGal{{forloop.counter}}").val();
+    $.post("{% url "intcall_description" picture.id %}", {'picture_description':$text});
+    $.post("{% url "intcall_gallery" %}", {'insert_picture':true,
+           'gallery_id': $gal,
+    'picture_id':  {{ picture.id }}});
+    if ($gal!=-1)
+{
+    $("#imgDiv{{forloop.counter}}").remove();
+}
+    $('#myModal{{forloop.counter}}').foundation('reveal', 'close');
+    })
+$('#removeButton{{forloop.counter}}').click(function()
+{
+$.post("{% url "intcall_picture" picture.id %}", {'remove':'true'});
+
+
+    $('#imgDiv{{forloop.counter}}').remove();    
+
+
+
+$('#myModal{{forloop.counter}}').foundation('reveal', 'close');
+})
+{% endfor %}
+$('.set_banner').click(
+function(){
+picture_id = $(this).attr('val');
+$.post("/int_call/picture/" + picture_id + '/', {'set_banner':'true'},
+function(data){
+parsed = $.parseJSON(data);
+$('.user-background').css('background', 'url('+parsed['url']+') no-repeat');
+$('.user-background').css('background-size','cover');
+});
+})
+</script>{% endblock body_js %}
+{% block content  %}
+<div class="large-12 columns" style="background-color:#222" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            <img src="{{ gravatar_url }}" class="right" />
+            <h3  class="picup_header uppercase">{% block deerbox_title %}{% trans "Dashboard - DeerBox" %}{% endblock deerbox_title %}</h3>
+            <h5  class="picup_header">{% block deerbox_subtitle %}{% trans "Your data" %}{% endblock deerbox_subtitle %}</h5>                    
+        </div>
+    </div>
+</div>
+{% block deerbox_profile %}
+<div class="large-12 columns" style="background-color:#252525" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            
+            <h6  class="picup_header">{% trans "basic information about your account" %}</h6>
+        </div>
+    </div>
+</div>
+<div class="large-12 columns " style="display:none" id="idUsernameEdit" >
+    <div class="row collapse">
+        <div class="small-10 columns">
+            <input id="idUsernameInput" type="text" placeholder="{{ user.username }}" value="{{ user.username }}" />        
+        </div>
+        <div class="small-2 columns">
+            <a id="idUsernameSave" href="#" class="button postfix">Save</a>
+        </div>
+    </div>
+</div>
+<div id="apiKeyModal" class="reveal-modal" data-reveal>
+    <div class="large-4 columns">
+        <div id="apiqrcode"></div>
+    </div>
+    <div class="large-8 columns">
+        <h1>{% trans "Your api key" %}</h1>
+        <pre class="panel">{{ picup_profile.api_key }}</pre>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+<div class="large-12 columns imagelist" style="background-color:#444">
+    <div class="row mgtop20" data-equalizer>
+        <div class=" large-4 small-6 columns panel " data-equalizer-watch>
+            <h5 ><strong class="small_uppercase shadow"> <i class="fi-torso"></i>  {% trans "Username" %}</strong></h5>
+            <p id="idUsernameShow" ><strong class="small_uppercase_bold white">{{ user.username }}</strong></p>
+       </div>
+        <div class="panel large-4 small-6 columns" data-equalizer-watch>
+            <h5><strong class="small_uppercase shadow"> <i class="fi-mail"></i>   {% trans "Email" %}</strong></h5>
+            <p ><span class="white">{{ user.email }}</span>  </p>
+        </div>
+        <div class="panel large-4 small-6 columns" data-equalizer-watch>
+            <h5><strong class="small_uppercase shadow"> <i class="fi-calendar"></i> {% trans "Registered" %}</strong></h5>
+            <p><span class="white">{{ user.date_joined }}</span></p>
+        </div>
+
+        <div class="panel large-4 small-6 columns" data-equalizer-watch>
+            <h5><strong class="small_uppercase shadow"><i class="fi-trophy"></i> {% trans "Karma" %}</strong></h5>
+            <p><span class="white">{{ picup_profile.karma }}</span></p>
+       </div>
+        <div class="panel large-4 small-6 columns" data-equalizer-watch>
+                <h5><strong class="small_uppercase shadow"> <i class="fi-page-multiple"></i> {% trans "Galleries" %}</strong></h5>
+                <p><span class="white">{{ picup_profile.galleries.all.count}}</span></p>
+        </div>
+        <div class="panel large-4 small-6 columns" data-equalizer-watch>
+                <h5><strong class="small_uppercase shadow"> <i class="fi-photo"></i> {% trans "Pictures" %}</strong></h5>
+                <p class=""><span class="white">{{ picup_profile.pictures.all.count}}</span></p>
+        </div>
+        <div class="panel large-6 small-6 columns" data-equalizer-watch>
+        <h5><strong class="small_uppercase shadow"> <i class="fi-page-multiple"></i> {% trans "Api Key" %}</strong></h5>
+            <p  id="showModal"><strong class="small_uppercase shadow button expand">{% trans "Show Api Key" %}</strong></p>
+        </div>
+        <div class="panel large-6 small-6 columns" data-equalizer-watch>
+                <h5><strong class="small_uppercase shadow"> <i class="fi-skull"></i> {% trans "Remove an account" %}</strong></h5>
+                <p>   <strong class="small_uppercase shadow">             <a class="small_uppercase alert button expand alert" href="{% url "accounts_remove" %}">{% trans "Delete" %}</a></strong>
+        </div>
+    </div>    
+    {% comment %}
+    <div class="row ">
+        <div class="large-4 small-4 columns">
+            {% block edit_panel %}
+            <h5  class="picup_header">{% trans "Your data" %}</h5>
+            <div class="hide-for-small panel">
+                <strong class="small_uppercase">{% trans "Username" %}</strong>
+                <h5 >{{ user.username }}</h5>
+               
+                <strong class="small_uppercase">{% trans "Email" %}</strong>
+                <h5>{{ user.email }}</h5>
+                <strong class="small_uppercase">{% trans "Karma" %} </strong>
+                <h5>{{ picup_profile.karma }}</h5>
+
+                <hr/>
+                <h5><strong class="small_uppercase alert"><a class="small_uppercase alert" href="/accounts/remove/">{% trans "Delete an account" %}</a></strong></h5>
+
+                
+
+            </div>
+            {% endblock edit_panel %}
+        </div>
+    {# <a href="{% url "upload" %}" class="button expand ">Upload more pictures</a> #} 
+    </div>
+    {% endcomment %}
+</div>
+<div class="large-12 columns" style="background-color:#222" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            <h5  class="picup_header" id="gManagement">{% trans "Galleries management" %}</h5>                    
+        </div>
+    </div>
+</div>
+
+<div class="large-12 columns imagelist" style="background-color:#444">
+    <div class="row">
+        <div class="large=12 columns">
+            <div class="row">
+                <div class="large-12 ">
+            	{% block profile_galleries %}
+                    <p style="margin-top:15px"><a id="galleryCreate" href="#gManagement" class="button expand small "><strong>{% trans "Create a gallery" %}</strong></a></p>
+                    <h5  class="picup_header">{% trans "Your galleries:" %}</h5>
+
+                    <div class="row collapse">
+                        <div class="small-10 columns">
+                            <input id="idGalleryName" style="display:none" class="createGallery" type="text" placeholder="{% trans "Photos from Japan" %}" value="" />
+                        </div>
+                        <div class="small-2 columns">
+                            <a id="idGallerySave" style="display:none" href="#idGallerySave" class="createGallery button postfix">Save</a>
+                        </div>
+                    </div>
+                    <table width="100%" id="idTableGalleries">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "License" %}</th>
+                                <th>{% trans "Created" %}</th>
+                                <th>{% trans "Exif" %}</th>
+                            </tr>
+                        </thead>
+                        {% if galleries %}
+                        {% for gallery in galleries %}
+                        <tr>
+                            <td>
+                                <h5><strong><a href="{% url "deerbox_gallery" gallery.id %}" id="gallery{{ gallery.id }}" class="galleryButton ">{{ gallery.title}}</a></strong></h5>
+                            </td>
+                            <td><h5><strong>{{ gallery.get_license_name }}</strong></h5></td>
+                            <td><h5><strong>{{ gallery.created|date:"Y-m-d" }}</strong></h5></td>
+                            <td><h5><strong>{{ gallery.exif }}</strong></h5></td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <h6 id="idNoGalleries">{% trans "You haven't created any gallery, yet." %}</h6>
+                        {% endif %}
+                        <tfoot style="height:0px; background-color:555">
+                            <tr id="idFoot" style="height:0px; background-color:#555">
+                                <th style="height:0px; background-color:555" colspan="5"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    {% endblock profile_galleries %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% if pictures_all %}
+<div class="large-12 columns" style="background-color:#252525" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            
+                <h5  class="picup_header">{% trans "Pictures without a gallery" %}</h5>
+        </div>
+    </div>
+</div>
+<div class="large-12 columns imagelist" style="background-color:#444">
+    <div class="row">
+
+                
+                
+
+                {% include "inc_deerbox_thumbs.html" %}
+
+    </div>
+</div>
+{% endif %}
+{% endblock deerbox_profile %}
+{% endblock content %}

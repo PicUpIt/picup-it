@@ -1,0 +1,195 @@
+{% extends "base.html" %}{% load i18n static foundation_tags %}
+{% block title %}#PicUp {{ picture.description.all.first.text }}{% endblock %}
+{% block header%}<style type="text/css">.picup-trans { background-color:   rgba(15,15,9,0.2);}</style>{% endblock %}
+{% block meta %}<meta name="keywords" content="PicUp,Diaspora,Free,Image,Picture,Photo,Hosting,Platform,Gallery,Album" />
+<meta name="author" content="{{ picture.user.username }}" />
+{% if picture.description.all.first.text %}<meta name="description" content="{{  picture.description.all.first.text }}">
+	{% endif %}	<link rel="alternate" type="application/json+oembed"  href="https://picup.it/p/{{ picture.id}}.json" title="PicUp OemBed" />
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:title" content="PicUp, Free Image Hosting Platform" />
+	<meta property="twitter:site" content="picupit" />
+	<meta property="twitter:description" content="{% if picture.description.all.first.text %}{{ picture.description.all.first.text }} at PicUp.It {% else %}Uploaded to PicUp.It {% endif %}by {{ picture.user.username}}" />
+	<meta property="twitter:image:src" content="https://picup.it{{ picture.picture_medium.url }}" />
+	<meta property="og:title" content="#PicUp Easy Pictures Sharing and Upload" />
+	<meta property="og:url" content="https://picup.it/p/{{ picture.id }}/" />
+	<meta property="og:image" content="https://picup.it{{ picture.picture_thumb.url }}" />
+	<meta property="og:description"
+	content="{{ picture.description.all.first.text }} #PicUp is a platform for all #pictureslovers - sharing is caring!" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="PicUp.it" />
+	<meta name="DC.format"
+	content="{{ picture.get_mime_type }}" />
+	<meta name="DC.creator"
+	content="{{ picture.user.username }}" />
+	<meta name="DC.date"
+	content="{{ picture.created|date:"Y-m-d" }}" />
+	{% if picture.description.all.first.text %}<meta name="DC.title"
+		content="{{ picture.description.all.first.text }}" />
+	{% endif %}{% if picture.is_cc %}<meta name="DC.rights"
+	scheme="DCTERMS.URI"
+	content="{{ picture.get_license_url }}" />
+	<meta name="DC.rights"
+	content="(c) {{ picture.created.year }} {{ picture.user.username}}" />
+{% endif %}
+{% endblock meta %}
+{% block content %}
+{% comment %}
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+{% endcomment %}
+<div class="background_gradient">
+<div class="row">
+	<div class="large-8 columns ">
+		
+		<a  class="" href="{{ picture.picture.url }}" style="width:100%">
+			<center>
+			{% if picture.width > 650 %}
+				<img  class="th picture_view_image" style="width:100%" {% if picture.is_gif %}src="{{ picture.picture.url }}"{% else %}src="{{ picture.picture_smart.url }}"{% endif %} title="{{ picture.description.all.first.text }}" alt="{{ picture.description.all.first.text }}">
+			{% else %}
+				<img  class="th picture_view_image" style="width:100%" src="{{ picture.picture.url }}" title="{{ picture.description.all.first.text }}" alt="{{ picture.description.all.first.text }}">
+			{% endif %}
+			</center>
+		</a>
+		{% if picture.gallery %}
+			<ul class="small-block-grid-4 large-block-grid-4">
+				{% for other_picture in others_pictures %}<li><div class="image"><a href="{% url 'picture_view' other_picture.id %}"><img width="150" class="" src=" {{ other_picture.picture_thumb.url }}"></a>
+				<div class="black">
+					<a href="{% url 'picture_view' other_picture.id %}"></a>
+				</div>
+			</div></li>
+		{% endfor %}</ul>{% endif %}
+	</div>
+	<style>
+	.caption {
+		margin-top:10px;
+		margin-bottom:10px;
+		margin-right:5px;
+		margin-left:5px;
+		width: 100px;
+		color: white;
+		padding-top: 10px;
+		padding-right: 20px;
+		padding-bottom: 5px;
+		padding-left: 5px;
+		background-color:rgba(5,5,5,0.5);
+	}
+	.black {
+				color: black;
+	}
+	</style>
+	<div class="large-4 small-12 columns">
+		<div class="profile-card">
+			<div class="small-12 large-12 columns"  style="background-color:#252525">
+				<p class="font_xsmall"><strong>{% if picture.description.all.first.text %}{{ picture.description.all.first.text  }}{% else %}{% trans "no description" %}{% endif %}</strong></p>
+				<p style="font-size:0.7em;color:white">width: {{ picture.width }} height: {{ picture.height }}</p>
+			</div>
+			<div class="row collapse">
+				<hr/ style="margin-bottom:0px;">
+				<ul class="small-block-grid-3 centered">
+					<li><a href="{% url "user_galleries" picture.user.id %}"><h6>{% trans "Uploaded&nbsp;by" %}</h6><p>{{ picture.user.username }}</p></a></li>
+					{% if picture.gallery  %}
+						<li><a href="{% url "user_gallery" picture.user.id picture.gallery.id  %}" ><h6>{% trans "In a gallery" %}</h6><p>{{ picture.gallery.title }}</p></a></li>
+						<li><a target="_blank" href="{{ picture.get_license_url }}" ><h6>{% trans "License" %}</h6><img class="license" src="{% static picture.gallery.get_license_picture %}" alt='{{ picture.gallery.get_license_name }}' title='{{ picture.gallery.get_license_name }}'  /><span></span></a></li>
+					{% else %}
+						<li><a href="#" class="button tiny">{% trans "No gallery" %}<span>:(</span></a></li>
+						<li><a href="#" class="button tiny">{% trans "License" %}<span>{% trans "Unknown" %}</span></a></li>
+					{% endif %}
+					
+				</ul>
+			</div>
+		</div>
+		{% if picture.gallery %}
+			<div class="">	
+				<div class=" panel_custom">
+					<h5 class="picup_header">{% trans "Browse gallery" %}</h5>
+					{% if picture_next %}
+						<a class="large-4 small-4 th {% if 1 %} right{% endif %}" href="{% url "picture_view" picture_next.id %}">
+						<img  src="{{ picture_next.picture_thumb.url }}"/>
+						<span  class="caption " style="align: right">Next</span>
+					</a>
+				{% else %}
+					<a class="large-4 small-4 th {% if 1 %} right{% endif %}" href="{% url "picture_view" picture_first.id %}">
+					<img  src="{{ picture_first.picture_thumb.url }}"/>
+					<span  class="caption " style="align: right">First</span>
+				</a>
+			{% endif %}
+			{% if picture_previous %}<a class="large-4 small-4  th"  href="{% url "picture_view" picture_previous.id %}"><img  src="{{ picture_previous.picture_thumb.url }}"><span  class="caption">Prev</span></a>
+		{% else %}
+			<a class="large-4 small-4  th"  href="{% url "picture_view" picture_last.id %}"><img  src="{{ picture_last.picture_thumb.url }}"><span  class="caption">Last</span></a>
+		{% endif  %}
+	</div>
+</div>
+{% endif %}
+{# <input id="diaspora_markdown" onclick="this.select();" type='text'  class="" value='![PicUp Share](https://picup.it{{ picture.picture.url }})' /> #}
+<div id="diasporaLinkModal" class="reveal-modal" data-reveal>
+<h6 class="black">Smart thumbnail ({{ picture.picture_smart.width}}x{{ picture.picture_smart.height}}) with link to the picture page</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='[![PicupShare](https://picup.it{{ picture.picture_smart.url }} )](https://picup.it{% url "picture_view" picture.id %} )' />
+<h6 class="black">Link to original ({{ picture.picture.width}}x{{ picture.picture.height}}) with link to the picture page</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='[![PicupShare](https://picup.it{{ picture.picture.url }} )](https://picup.it{% url "picture_view" picture.id %} )' />
+<h6 class="black">Link to medium (640x640) with link to the picture page</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='[![PicupShare](https://picup.it{{ picture.picture_medium.url }} )](https://picup.it{% url "picture_view" picture.id %} )' />
+<h6 class="black">Link to thumb (210x210) with link to the  picture page</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='[![PicupShare](https://picup.it{{ picture.picture_thumb.url }} )](https://picup.it{% url "picture_view" picture.id %} )' />
+<h6 class="black">Link to original ({{ picture.picture.width}}x{{ picture.picture.height}})</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='![PicUp Share](https://picup.it{{ picture.picture.url }} )' />
+<h6 class="black">Link to medium (640x640)</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='![PicUp Share](https://picup.it{{ picture.picture_medium.url }} )' />
+<h6 class="black">Link to thumb (210x210)</h6>
+<input id="diaspora_markdown" onclick="this.select();" type='text'  class="expand button" value='![PicUp Share](https://picup.it{{ picture.picture_thumb.url }} )' />
+{# [![PicupShare](https://picup.it/media/pictures/IMG_20140423_144602.jpg)](https://picup.it/p/1557/) #}
+<center><small><em>If you uploaded picture smaller than 640x640 - smart medium and sizes will be bigger than original. We hope it is not a problem ;) - PicUp.It hackers</em>
+<a class="close-reveal-modal">&#215;</a></smallbutton ><center>
+</div>
+<div class="">
+<p><center><a href="#" data-reveal-id="diasporaLinkModal" class="button radius small_uppercase" data-reveal>Markdown Link Generator </a></center></p>
+</div>
+{# 		<a href="#" onclick="$('#diaspora_markdown').select();" class="button expand">Copy Diaspora* Markdown</a> #}
+<div class="panel_custom">
+<h5 class="picup_header">{% trans "Share" %}</h5>
+<div style="margin-bottom:25px">
+	{% include "inc_share.html" %}
+</div>
+</div>
+{% if picture.gallery.exif %}
+{% if metadata %}
+	<p>
+		<div class="panel_custom">
+			<p><center><a id="id_toggle_exif" href="#" class="button small_uppercase" >{% trans "Toggle EXIF tags" %}</a></center></p>
+		</div>
+		
+	</p>
+	<table id="id_exif_tags" width="100%" style="display:none" >
+		<thead>
+			<tr>
+				<th class="small_uppercase">{% trans "Exif Key" %}</th>
+				<th class="small_uppercase">{% trans "Exif Value" %}</th>
+			</tr>
+		</thead>
+		<tbody >
+			{% for metakey, metavalue in metadata.items %}
+				<tr>
+					<td style="font-size: 0.9em;">{{ metakey }}</td>
+					<td style="font-size: 0.9em;">{{ metavalue }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+{% block extra_body_js %}
+<script>
+$('#id_toggle_exif').click(function(){
+	$('#id_exif_tags').toggle();
+})
+</script>
+{% endblock %}

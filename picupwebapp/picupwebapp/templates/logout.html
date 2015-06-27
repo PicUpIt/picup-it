@@ -1,0 +1,6 @@
+{% extends "homepage.html" %}{% load i18n %}
+{% block content %}{% endblock %}
+{% block homepage_panel %}
+<h4>{% trans "You have just logged out" %}</h4>
+<a href="{% url "browse" %}" class="button expand">{% trans "Go and see more pictures!" %}</a>
+{% endblock homepage_panel %}

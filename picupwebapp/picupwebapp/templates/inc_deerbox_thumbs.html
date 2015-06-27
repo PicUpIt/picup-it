@@ -1,0 +1,55 @@
+{% load i18n static %}{% for picture in pictures_all %}
+	<div id="myModal{{forloop.counter}}" class=" medium reveal-modal" data-reveal class="large-12 columns">
+		<div class="row">
+			<div class="large-4 columns">
+				<a href="{% url "picture_view" picture.id %}"><img class="th" src="{{ picture.picture_thumb.url }}"/></a>
+			</div>
+			<div class="large-8 columns">
+{% comment %}
+				<ul class="right side-nav">
+					<li>
+						<a href="{% url "picture_view" picture.id %}">{% trans "View the picture" %}</a>
+					</li>
+					<li>
+						<a id="idSetBanner{{ picture.id }}" class="set_banner" href="#" val="{{ picture.id }}">{% trans "Set as a banner" %}</a>
+					</li>
+				</ul>
+						<ul class="side-nav">
+					<li>
+
+</li>
+
+</ul>    
+
+{% endcomment %}<label>Description
+
+				<input id="idDesc{{forloop.counter}}" type="text" name="picture_description{{forloop.counter}}" value="{{picture.description.first.text }}"/>
+	</label>		
+    <label>Gallery
+        <select id="selectGal{{forloop.counter}}">
+        	<option value="-1">{% trans "Choose gallery" %}</option>
+    	{% for g in picture.user.gallery.all %}
+          <option value="{{ g.id }}" {% if g.id == picture.gallery.id %}selected="selected"{% endif %}>{{ g.title }}</option>
+          {% endfor %}
+
+        </select>
+      </label><br/>
+
+			<a id="saveButton{{forloop.counter}}" href="#saveButton{{forloop.counter}}" class="small button success radius">{% trans "Save" %}</a>
+
+			<a href="#" onClick="$('#myModal{{forloop.counter}}').foundation('reveal', 'close');" class="small button radius ">{% trans "Cancel" %}</a>
+			<a id="removeButton{{forloop.counter}}"  href="#"  class="small button alert right radius">{% trans "Remove picture" %}</a>
+			</div>
+			<a class="close-reveal-modal">&#215;</a>
+
+		</div>
+
+	</div>
+
+
+<div id="imgDiv{{forloop.counter}}" class="large-2 small-3 columns">
+	<img id="img{{forloop.counter}}" value="{{picture.id}}" data-reveal-id="myModal{{forloop.counter}}" class="th" src="{{ picture.picture_thumb.url }}"/>
+
+
+</div>
+{% endfor %}

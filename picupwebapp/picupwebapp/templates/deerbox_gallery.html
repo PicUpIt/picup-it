@@ -1,0 +1,385 @@
+{% extends "profile.html" %}{% load i18n static %}
+                  {% block profile_galleries %}
+<h5  class="picup_header">{% trans "Gallery management:" %}</h5>                    
+    <div >
+  
+</div>
+
+                  {% endblock profile_galleries %}
+
+
+{% block header %}
+<style>
+option {background-color: #444; color:white;}
+select#id_license {background-color: white; color:#000;}
+</style>
+{% endblock %}
+{% block body_js %}
+<script>
+
+licenseChoices = ['unknown.png', 'copyright.png', 'ccby.png',  'ccbysa.png',  'ccbynd.png',  'ccbync.png',  'ccbyncsa.png',  'ccbyncnd.png'];
+
+
+function removeGallery($galleryId)
+{
+    $.post("{% url "intcall_gallery" %}", {'gallery_id':$galleryId, 'remove':true},
+    function (data){
+          var obj = $.parseJSON(data);
+      $('#myModal').foundation('reveal', 'close');
+      window.location.replace('{% url "deerbox" %}');
+    }
+);
+}
+
+$(document).ready
+(
+  function() 
+{
+    $('#idRemoveGallery').click(function()
+    {
+      $('#myModal').foundation('reveal', 'open');
+    });
+    $('#idRemoveGalleryYes').click(function()
+    {
+      removeGallery($('#idGallery').val());
+    })
+  }
+) ;
+
+
+{% for picture in pictures_all %}
+
+
+  
+  $('#saveButton{{forloop.counter}}').click(function()
+  { 
+    var $text = $("#idDesc{{forloop.counter}}").val();
+    var $gal = $("#selectGal{{forloop.counter}}").val();
+
+    $.post("{% url "intcall_description" picture.id %}", {'picture_description':$text});
+        $.post("{% url "intcall_gallery" %}", {'insert_picture':true,
+           'gallery_id': $gal,
+    'picture_id':  {{ picture.id }}});
+
+    if ($gal!={{picture.gallery.id}})
+{
+    $("#imgDiv{{forloop.counter}}").remove();
+}
+
+ 
+
+    $('#myModal{{forloop.counter}}').foundation('reveal', 'close');
+
+  })
+  $('#removeButton{{forloop.counter}}').click(function()
+  { 
+    $.post("{% url "intcall_picture" picture.id %}", {'remove':'true'});
+    $('#imgDiv{{forloop.counter}}').remove();
+    $('#myModal{{forloop.counter}}').foundation('reveal', 'close');
+
+  })
+
+{% endfor %}
+$('.set_banner').click(
+  function(){
+    picture_id = $(this).attr('val');
+    $.post("/int_call/picture/" + picture_id + '/', {'set_banner':'true'}, 
+      function(data){
+        parsed = $.parseJSON(data);
+        $('.user-background').css('background', 'url('+parsed['url']+') no-repeat');
+        $('.user-background').css('background-size','cover');
+      });
+  })
+            
+
+
+$('#idGalleryTitleSave').click(
+  
+  function(){
+    
+    $('#idGalleryTitleShow').show();
+    $('#idGalleryTitleEdit').hide();
+    var title = $('#idGalleryTitleInput').val();
+    var gallery_id = {{ gallery.id }};
+    $.post("{% url "intcall_gallery" %}", {
+      'gallery_id':gallery_id,
+      'title':title,
+      'edit':''
+    },
+      function(data)
+      {
+        var parsedJSON = $.parseJSON(data);
+        if (parsedJSON['result']=="OK"){
+          $('.galleryTitle').html(parsedJSON['title']);
+          $('#idGalleryTitleShow').text(parsedJSON['title']);
+        } else {
+          alert("There was some error, perhaps username reserved / exists.")
+        }
+      });
+
+      //$('#idGalleryTitleShow').text($('#idGalleryTitleInput').val());
+    })
+
+
+
+$('#idGalleryTitleShow').click(function(){
+  $('#idGalleryTitleShow').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $(document).bind('click', function (e) {
+    if(!$(e.target).is('#idGalleryTitleShow')){
+      $('#idGalleryTitleShow').show();
+      $('#idGalleryTitleEdit').hide();}
+    });
+  $('#idGalleryTitleShow').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $('#idGalleryTitleEdit').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $('#idGalleryTitleShow').hide();
+  $('#idGalleryTitleEdit').show();
+})
+
+$('#idGalleryDescShow').click(function(){
+  //$('#idGalleryDescInput').attr('placeholder', $('#idGalleryDescInput').val())
+  $('#idGalleryDescInput').val($('#idGalleryDescShow').html()); 
+  $('#idGalleryDescShow').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $(document).bind('click', function (e) {
+    if(!$(e.target).is('#idGalleryDescShow')){
+      $('#idGalleryDescShow').show();
+      $('#idGalleryDescEdit').hide();}
+    });
+  $('#idGalleryDescShow').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $('#idGalleryDescEdit').bind('click', function(e) {
+    e.stopPropagation();
+  });
+  $('#idGalleryDescShow').hide();
+  $('#idGalleryDescEdit').show();
+})
+
+$('#idGalleryDescSave').click(
+  
+  function(){
+    
+    $('#idGalleryDescShow').show();
+    $('#idGalleryDescEdit').hide();
+    var description = $('#idGalleryDescInput').val();
+    var gallery_id = {{ gallery.id }};
+    $.post("{% url "intcall_gallery" %}", {
+      'gallery_id':gallery_id,
+      'description':description,
+      'edit':''
+    },
+      function(data)
+      {
+        var parsedJSON = $.parseJSON(data);
+        if (parsedJSON['result']=="OK"){
+          //$('.galleryTitle').html(parsedJSON['description']);
+          $('#idGalleryDescShow').text(parsedJSON['description']);
+        } else {
+          alert("There was some error, perhaps username reserved / exists.")
+        }
+      });
+
+      //$('#idGalleryDescShow').text($('#idGalleryDescInput').val());
+    })
+
+
+
+function updateExitTag()
+{
+  
+
+
+     $.post("{% url "intcall_gallery" %}", {
+      'gallery_id':{{gallery.id}},
+      'exif':$('#idGalleryExif').prop('checked'),
+      'edit':''
+    },
+      function(data)
+      {
+        var parsedJSON = $.parseJSON(data);
+        if (parsedJSON['result']=="OK"){
+          //$('.galleryTitle').html(parsedJSON['description']);
+          //$('#idGalleryDescShow').text(parsedJSON['description']);
+        } else {
+          alert("There was some error, perhaps username reserved / exists.")
+        }
+      });
+}
+
+$('#idGalleryExif').click(function(){
+  updateExitTag();
+})
+
+$("#id_license").change(function() {
+
+  var licenseNumber = $(this).val();
+  var licensePicture = licenseChoices[licenseNumber];
+
+if (licensePicture!=null)
+{
+//  alert('{% static "images" %}/'+licensePicture);
+  $('#id_license_picture').attr('src', '{% static "images" %}/cc/'+licensePicture);
+  }
+else
+  $('#id_license_picture').attr('src', '');
+
+
+ var gallery_id = {{ gallery.id }};
+    $.post("{% url "intcall_gallery" %}", {
+      'gallery_id':gallery_id,
+      'license':licenseNumber,
+      'edit':''
+    },
+      function(data)
+      {
+        var parsedJSON = $.parseJSON(data);
+        if (parsedJSON['result']=="OK"){
+          //$('.galleryTitle').html(parsedJSON['description']);
+         // $('#idGalleryDescShow').text(parsedJSON['description']);
+        } else {
+          alert("There was some error, perhaps username reserved / exists.")
+        }
+      });
+
+
+
+})
+
+
+</script>
+
+
+
+
+{% endblock %}
+{% block deerbox_title %}Dashboard{% endblock deerbox_title %}
+{% block deerbox_subtitle %}Gallery edition{% endblock deerbox_subtitle %}
+{% block deerbox_profile %}
+<div class="large-12 columns" style="background-color:#252525" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            
+            <h6  class="picup_header">{% trans "basic information about your gallery" %}</h6>
+        </div>
+    </div>
+</div>
+<div class="large-12 columns" style="background-color:#333" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+          
+          <nav class="top-bar" data-topbar role="navigation" data-topbar data-options="">
+
+
+            <section class="top-bar-section">
+
+              <!-- Right Nav Section -->
+              <ul class="right">
+                <li class="divider hide-for-small"></li>
+              <li ><a id="idRemoveGallery" href="#idRemoveGallery" >{% trans "Remove gallery" %}</a></li>
+              </ul>
+              <ul class="left">
+             
+              <!-- Title Area -->
+              <li ><a href="{% url "user_gallery" user.id gallery.id %}">{% trans "View your gallery" %}</a></li>
+              <li class="divider hide-for-small"></li>
+              <li ><a href="{% url "upload" %}?gallery_id={{ gallery.id }}">{% trans "Upload here" %}</a></li>
+              <li class="divider hide-for-small"></li>
+              <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+              <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+
+            </section>
+          </nav>
+        </div>
+    </div>
+</div>
+<div class="large-12 columns imagelist" style="background-color:#444">
+    <div class="row mgtop20" >
+<div class="hide-for-small panel">
+            <h5 ><strong class="small_uppercase shadow"> <i class="fi-torso"></i>  {% trans "Gallery name" %}</strong></h5>
+        <p class="panel" id="idGalleryTitleShow">{{ gallery.title }}</p>
+
+        <div class="large-12 columns" style="display:none" id="idGalleryTitleEdit" >
+          <div class="row collapse">
+            <div class="small-10 columns">
+              <input id="idGalleryTitleInput" type="text" placeholder="{{ gallery.title }}" value="{{ gallery.title }}" />        </div>
+              <div class="small-2 columns">
+                <a id="idGalleryTitleSave" href="#" class="button postfix">Save</a>
+              </div>
+            </div>
+          </div>
+
+
+            <h5 ><strong class="small_uppercase shadow"> <i class="fi-torso"></i>  {% trans "Gallery Description" %}</strong></h5>
+          <p class="panel" id="idGalleryDescShow" class="">{{ gallery.description }}</p>
+        <div style="display:none;margin-bottom:60px;" id="idGalleryDescEdit" >
+        <textarea id="idGalleryDescInput" placeholder="{% trans "My awesome photos" %}"></textarea>
+        <a id="idGalleryDescSave" href="#" class="tiny button expand right">Save</a>
+      </div>
+      
+
+
+
+      <label>
+        <p class="right"><img  id="id_license_picture" src="{% static license_pic %}"/></p>
+            <h5 ><strong class="small_uppercase shadow"> <i class="fi-torso"></i>  {% trans "License" %}</strong></h5>
+{{ license_form.license }}
+      </label>
+
+            <h5 ><strong class="small_uppercase shadow"> <i class="fi-torso"></i>  {% trans "Show Exif tags" %}</strong></h5>
+      <input id="idGalleryExif" class="exifClick" type="checkbox" {% if gallery.exif %}checked='checked'{% endif %}><label for="checkbox1" class="exifClick small_uppercase_bold">
+        </div>
+        
+   
+
+<div id="myModal" class="reveal-modal" data-reveal>
+  <h2>{% trans "You are going to remove this gallery." %}</h2>
+  <p class="lead">{% trans "Are you sure?" %}</p>
+  <p>Photos from this gallery are not going to be removed, but instead will be moved to the DeerBox.</p>
+  <a class="close-reveal-modal">&#215;</a>
+  <input type="hidden" id="idGallery" value="{{ gallery.id }}" />
+    <a id="idRemoveGalleryYes" href="#" class="radius button alert">{% trans "Yes, I am sure" %}</a>
+    <a id="idRemoveGalleryNo" href="#" onclick="$('#myModal').foundation('reveal', 'close')" class="radius   button right">{% trans "No, I have changed my mind" %}</a>
+</div>
+    
+      </div>
+      </div>
+
+
+<div class="large-12 columns" style="background-color:#252525" >
+    <div class="row collapse">
+        <div class="small-12 large-12 columns">
+            
+            <h6  class="picup_header">{% trans "Pictures in this gallery" %}</h6>
+
+        </div>
+    </div>
+</div>
+
+<div class="large-12 columns imagelist" style="background-color:#444">
+    <div class="row" >
+        <div class="small-12 large-12 columns">
+                            {% include "inc_deerbox_thumbs.html" %}
+
+
+        </div>
+    </div>
+</div>
+{% endblock deerbox_profile %}
+
+
+{% block edit_panel %}
+
+
+{% endblock %}
+{% block deerbox_subpanel %}<a href="{% url "deerbox" %}" class="button tiny right">DeerBox</a>
+<h4>{% trans "In this gallery:" %}</h4>    
+
+{% endblock %}

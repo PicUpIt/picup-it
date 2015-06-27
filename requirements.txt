@@ -1,0 +1,17 @@
+Django
+django-zurb-foundation>=5
+python-social-auth
+Pillow
+argparse
+distribute
+django-registration
+django-simple-captcha
+py-bcrypt
+wsgiref
+django-rosetta
+psycopg2
+pycrypto
+unidecode
+requests
+pika
+https://github.com/PicUpIt/pyexiv2/archive/master.zip

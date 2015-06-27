@@ -1,0 +1,332 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% if gallery %}{{ gallery.title }} {% trans "by" %} {% endif %}{{ picup_user.username }} at PicUp{% endblock %}
+{% block meta_desc %}{% if gallery.title %}<meta name="description" content="{{  gallery.title }}">{% else %}<meta name="description" content="{% trans "album - gallery of pictures" %}">{% endif %}{% endblock %}
+{% block meta_author %}<meta name="author" content="{{ picup_user.username }}" />{% endblock %}
+{% block opengraph %}
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="rss/" />
+  <meta property="og:title" content="PicUp, Free Image Hosting Platform" />
+  <meta property="twitter:title" content="PicUp, Free Image Hosting Platform" />
+  <meta property="twitter:site" content="picupit" />
+  <meta property="twitter:card" content="gallery" />
+  {% if gallery %}
+    <meta property="og:url" content="https://picup.it{% url "user_gallery" picup_user.id gallery.id %}" />
+  {% else %}
+    <meta property="og:url" content="https://picup.it{% url "user_galleries" picup_user.id %}" />
+  {% endif %}
+  {% if main_picture %}<meta property="og:image" content="https://picup.it{{ main_picture.picture_medium.url }}" />{% endif %}
+  {% if twitter_gallery %}
+    {% for tw_pic in twitter_gallery %}
+      <meta name="twitter:image{{ forloop.counter0 }}" content="https://picup.it{{ tw_pic.picture_thumb.url }}" />
+    {% endfor %}
+  {% endif %}
+  {% block opengraph_description %}
+    {% if gallery %}
+      <meta property="og:description" content="{{ gallery.title }} {% trans "by" %} {{ picup_user.username }} at PicUp.it" />
+      <meta property="twitter:description" content="{{ gallery.title }} {% trans "by" %} {{ picup_user.username }} at PicUp.it" />
+    {% else %}
+      <meta property="twitter:description" content="{{ picup_user.username }}'s pictures collection at PicUp.it" />
+      <meta property="og:description" content="{{ picup_user.username }}'s pictures collection at PicUp.it" />
+    {% endif %}
+  {% endblock opengraph_description %}
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="PicUp.it" />
+{% endblock opengraph %}
+{% block header %}
+{% endblock %}
+{% block quoteheader %}{% endblock %}
+{% block head_js %}
+  <!-- Piwik -->
+  <script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+  (function() {
+  var u=(("https:" == document.location.protocol) ? "https" : "http") + "://s.glam.pl/";
+  _paq.push(["setTrackerUrl", u+"piwik.php"]);
+  _paq.push(["setSiteId", "2"]);
+  var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+  g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+  <!-- End Piwik Code -->
+{% endblock head_js %}
+{% block body_js %}
+  {% include "inc_persona.html" %}
+  <script type="text/javascript">
+  $( document ).ready( function()
+  {
+  $('#qrcode').qrcode({render: 'image',
+  text:location.href,
+  label:'{{picup_user.username}}'});
+  $('#idViewGallery').click(function(){
+  $('#idGalleryClearing').show();
+  $('#idGalleryNormal').hide();
+  $('dd').attr('class',"");
+  $('#idDDViewGallery').attr('class',"active");
+  })
+  $('#idViewListing').click(function(){
+  $('#idGalleryClearing').hide();
+  $('#idGalleryNormal').show();
+  $('dd').attr('class',"");
+  $('#idDDViewListing').attr('class',"active");
+  })
+  });
+  </script>
+  <script type="text/javascript" src="{% static "js/jquery.qrcode-0.7.0.min.js" %}" ></script>
+{% endblock body_js %}
+{% block content %}
+  <div class="large-12 columns">
+    <div class="row">
+      <div class="large-12 columns">
+        {% block bigheader %}
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+  <div class="background_gradient font_shadow pictures_in_gallery picup-trans">
+    <div class="row ">
+      <!-- Thumbnails -->
+      <div class="large-8 columns pictures_in_gallery">
+        <div class="row ">
+          <div class="">
+            {% if pictures_clearing %}
+              <dl class="sub-nav right">
+                <dt>{% trans "View as" %}:</dt>
+                <dd id="idDDViewListing" class="active"><a href="#idViewListing" id="idViewListing">{% trans "Listing" %}</a></dd>
+                <dd id="idDDViewGallery"><a href="#idViewGallery" id="idViewGallery">{% trans "Gallery Show "%}</a></dd>
+              </dl>
+              {% if gallery.exif %}<span class="right label success radius">Exif enabled!</span>{% endif %}
+              <div id="idGalleryNormal" class="row">
+                <div class="large-12 columns">
+                  <div class="row">
+                    {% for picture in pictures_all_3 %}
+                      <div class="large-4 small-6 columns">
+                        <a href="{% url "picture_view" picture.id %}" >
+                          <img class="th radius" src="{{ picture.picture_thumb.url }}">
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="large-12 columns">
+                  <div class="row">
+                    {% for picture in pictures_all_1 %}
+                      <div class="large-12 small-6 columns">
+                        <a href="{% url "picture_view" picture.id %}"  style="width:100%">
+                          <img style="width:100%" class="th radius" src="{{ picture.picture.url }}">
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="large-12 columns">
+                  <div class="row">
+                    {% for picture in pictures_all_2 %}
+                      <div class="large-6 small-6 columns">
+                        <a href="{% url "picture_view" picture.id %}" >
+                          <img class="th radius" src="{{ picture.picture_medium.url }}">
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="large-12 columns">
+                  <div class="row">
+                    {% for picture in pictures_all %}
+                      <div class="large-3 small-6 columns">
+                        <a href="{% url "picture_view" picture.id %}" >
+                          <img class="th radius" src="{{ picture.picture_thumb.url }}">
+                        </a>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <ul id="idGalleryClearing" style="display:none" class="clearing-thumbs" data-clearing>
+                {% for picture in pictures_clearing %}
+                  <li><a href="{{ picture.picture.url }}"><img data-caption="{{ picture.description.first.text }}" src="{{ picture.picture_thumb.url }}"></a></li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              {% if galleries %}
+                <div class="large-12 columns" style="background-color:#252525" >
+                  <div class="row collapse">
+                    <div class="small-12 large-12 columns">
+                      
+                      <h6  class="picup_header">{% trans "Galleries" %}</h6>
+                    </div>
+                  </div>
+                </div>
+                <div id="galleriesRegular" class="row">
+                  <div class="large-12 columns">
+                    <div class="row">
+                      {% for gallery_iter in galleries_thumbs_1 %}
+                        <div class="large-12 small-6 columns">
+                          <div class="item-wrapper">
+                            <div class="img-wrapper">
+                              <a class="button expand add-to-cart" href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}">{{ gallery_iter.title|truncatechars:51  }}</a>
+                              <a href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}"><img src="{{ gallery_iter.picture_set.first.picture_medium.url }}"></a>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="large-12 columns">
+                    <div class="row">
+                      {% for gallery_iter in galleries_thumbs_2 %}
+                        <div class="large-6 small-6 columns">
+                          <a href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}"><img class="th" src="{{ gallery_iter.picture_set.first.picture_medium.url }}"></a>
+                          <div class="panel">
+                            <h5><a class="picup-text" href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}">{{ gallery_iter.title|truncatechars:11  }}</a></h5>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  <div class="large-12 columns">
+                    <div class="row">
+                      {% for gallery_iter in galleries_thumbs_3 %}
+                        <div class="large-4 small-6 columns">
+                          <a href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}"><img class="th" src="{{ gallery_iter.picture_set.first.picture_medium.url }}"></a>
+                          <div class="panel">
+                            <h5><a class="picup-text" href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}">{{ gallery_iter.title|truncatechars:11  }}</a></h5>
+                          </div>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% for gallery_iter in galleries_thumbs %}
+                    <div class="large-6 small-6 columns">
+                      <div class="item-wrapper">
+                        <div class="img-wrapper">
+                          <a class="button expand add-to-cart" href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}">{{ gallery_iter.title|truncatechars:51  }}</a>
+                          <a href="{% url "user_gallery" gallery_iter.user.id gallery_iter.id %}"><img src="{{ gallery_iter.picture_set.first.picture_medium.url }}"></a>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endif %}
+            {% if not galleries %}
+              {% if not pictures_clearing %}
+                <center>
+                <h1  class="picup-text">{% trans "There is literally nothing here..." %}</h1>
+                <img class="" src="{% static "images/deer.svg" %}"/>
+                <h5  class="picup-text">{{ picup_user.username }} {% trans "can do better for sure..." %}</h5>
+                </center>
+              {% endif %}
+            {% endif %}
+          </div>
+          
+          </div><!-- End Thumbnails -->
+          <!-- Managed By -->
+        </div>
+        <!-- Side Bar -->
+        <div class=" large-4 small-12 columns" style="background:before: #white;">
+          <div class="row bump">
+            <div class="small-12 large-12 columns">
+              <div class="row">
+                <div class="profile-card">
+                  {% if not gallery %}
+                    <div class="small-12 large-4 columns">
+                      <a href="{% url "user_galleries" picture.user.id %}" class="small_uppercase"><img class=" th  " width="40" height="40" src="{{ user_gravatar_url }}"/>
+                      </a>
+                    </div>
+                    <div class="small-12 large-8 columns">
+                      <a href="rss/" class="right"><i class="fi-rss right" style="font-size:1em;color:white"></i></a>
+                      <h4>{{ picup_user.username }} <span>&nbsp;</span></h4>
+                      {% comment %}
+                      <p><i class="fi-mail"></i><span> smtsmt@smt.com</span></p>
+                      <p><i class="fi-social-twitter"></i>@username</p>
+                      <p><i class="fi-web"></i>thisisme@myemai.com</p>
+                    {% endcomment %}
+                  </div>
+                  <div class="row collapse">
+                  <ul class="small-block-grid-3 centered">
+                      <li><a href="#" ><h6>{% trans "Karma" %}</h6><p>{{ picup_profile.karma }}</p></a></li>
+                      <li><a href="#" ><h6>{% trans "Pictures" %}</h6><p>{{ picup_profile.pictures.count }}</p></a></li>
+                      <li><a href="#" ><h6>{% trans "Galleries" %}</h6><p>{{ picup_profile.galleries.count }}</p></a></li>
+                    </ul>
+                  </div>
+                {% else %}
+                  <div class="small-12 large-4 columns" style='min-width:40px; min-height:40px'>
+                    <a  href="{% url "user_galleries" picture.user.id %}" class="small_uppercase"><img class=" th  "  width="40" height="40" src="{{ user_gravatar_url }}"/>
+                    </a>
+                  </div>
+                  <div class="small-12 large-8 columns" style="padding-left:0px">
+                    <a href="rss/" class="right"><i class="fi-rss right" style="font-size:1em;color:white"></i></a>
+                    <h4>{{ gallery.title }} <span>{% if gallery.description %}{{ gallery.description }}{% else %}&nbsp;{% endif %}</span></h4>
+                    {% comment %}
+                    <p><i class="fi-mail"></i><span> smtsmt@smt.com</span></p>
+                    <p><i class="fi-social-twitter"></i>@username</p>
+                    <p><i class="fi-web"></i>thisisme@myemai.com</p>
+                  {% endcomment %}
+                </div>
+                <div class="row collapse">
+                  <ul class="small-block-grid-3 centered">
+                    <li><a href="{% url "user_galleries" picup_user.id %}" ><h6>{% trans "Created by" %}</h6> <p>{{ picup_user.username }}</p></a></li>
+                    <li><a href="#" ><h6>{% trans "Pictures" %}</h6><p>{{ pictures_count }}</p></a></li>
+                    <li><a href="#" ><h6>{% trans "License" %}</h6><img style="display:block" width="80%" class="license" src="{% static gallery.get_license_picture %}" alt='{{ gallery.get_license_name }}' title='{{ gallery.get_license_name }}'  /><span></span></a></li>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          
+          {% if not gallery %}
+            <p>
+              <div class="panel_custom">
+                
+              </div>
+            </p>
+          {% endif %}
+          <h6 style="text-transform:uppercase;"></h6>
+          {% if galleries %}
+            <div class="panel_custom">
+              <h5 class="picup_header">{% trans "Galleries" %}</h5>
+            </div>
+            <div class="row">
+              {% for gallery_elem in galleries %}
+                {% if forloop.first %}
+                  {% if galleries_odd %}
+                    <div class="large-12 small-12 columns ">
+                      <div class="panel_custom">
+                        <a  href="{% url "user_gallery" picup_user.id gallery_elem.id %}" class=""><img  class="th" src="{{ gallery_elem.picture_set.last.picture_thumb.url}}"/><br/><span class="font_xsmall">{{ gallery_elem.title|truncatechars:11 }}</span></a>
+                      </div>
+                    </div>
+                  {% else %}
+                    <div class="large-6 small-6 columns ">
+                      <div class="panel_custom">
+                        <a  href="{% url "user_gallery" picup_user.id gallery_elem.id %}" class=""><img width="50" class="th" src="{{ gallery_elem.picture_set.last.picture_thumb.url}}"/><br/><span class="font_xsmall">{{ gallery_elem.title|truncatechars:11 }}</span></a>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <div class="large-6 small-6 columns ">
+                    <div class="panel_custom">
+                      <a  href="{% url "user_gallery" picup_user.id gallery_elem.id %}" class=""><img width="50" class="th" src="{{ gallery_elem.picture_set.first.picture_thumb.url}}"/><br/><span class="font_xsmall">{{ gallery_elem.title|truncatechars:11 }}</span></a>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <div class="panel_custom">
+            <h5 class="picup_header">{% trans "Share" %}</h5>
+            <div style="margin-bottom:25px">
+              {% include "inc_share.html" %}
+            </div>
+          </div>
+        </div>
+        <center>
+        <div id="qrcode" class="th" style="margin-bottom:25px;display:none">
+        </div>
+        </center>   </div><!-- End Side Bar -->
+      </div></div>
+    {% endblock %}

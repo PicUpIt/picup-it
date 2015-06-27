@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% load i18n %}{% block content %}
+
+<center><h1>{% trans "Page not found" %}</h1></center>
+{% endblock %}{% block bigheader %}
+
+<h2 class="big-header" style="">Error 404</h2>
+<img class="right"  src="{{ gravatar_url }}"/> 
+<h3 class="big-header">♥ {% trans "Page not found" %} ♥</h3>
+<h6 class="big-header">{% trans "Likely, it is your not fault. I hope not. You may feel lost." %}</h6>
+
+{% endblock %}.
+{% block quoteheader %}<blockquote style="color:#fff;">A new truth is a truth, an old error is an error.<cite style="color:#fff;"><a style="color:#fff;" href="https://en.wikipedia.org/wiki/Benjamin_Franklin"> Benjamin Franklin</a></cite></blockquote>{% endblock %}

@@ -1,0 +1,10 @@
+*.pyc
+picupwebapp/pictures/*
+uwsg_settings.py
+*.swp
+*.swo
+*.komodoproject
+*.wpu
+Picup-DJango-1.8
+reports
+picupwebapp/picupwebapp/settings_locals.py

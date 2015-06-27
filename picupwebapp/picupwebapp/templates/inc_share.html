@@ -1,0 +1,25 @@
+{% load i18n static %}
+<a href="" onclick="window.open('http://sharetodiaspora.github.io/?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'das','location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');return false;">
+			<img src="{% static "images/webicon-diaspora-m.png" %}"  alt="Share on Diaspora*" /></a>
+
+
+
+<a id="ref_tw" href="" onclick="javascript:window.open('http://twitter.com/home?status='+encodeURIComponent(location.href)+' '+encodeURIComponent(document.title),'das','location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');return false;"  ><img src="{% static "images/webicon-twitter-m.png"%}" alt=""/></a>
+
+<a id="ref_fb"  href="http://www.facebook.com/sharer.php" onclick="javascript:window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;summary='+encodeURIComponent(document.title), '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600'); return false;"><img src="{% static "images/webicon-facebook-m.png" %}" alt=""/></a>
+
+
+
+
+
+<a id="ref_gp" href=""
+onclick="javascript:window.open('https://plus.google.com/share?url='+encodeURIComponent(location.href), '', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false"><img src="{% static "images/webicon-googleplus-m.png" %}"alt=""/></a>
+
+
+<a id="ref_pr" href=""
+onclick="javascript:window.open('http://pinterest.com/pin/create/bookmarklet/?media=https://picup.it{{ picture.picture_thumb.url }}'+'&url='+encodeURIComponent(location.href)+'&description='+encodeURIComponent(document.title), '_blank', 'menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;"><img src="{% static "images/webicon-pinterest-m.png" %}"alt=""/></a>
+
+{% comment %} <a id="ref_tum" href=""
+onclick="javascript:window.open('http://tumblr.com/share?s=&u=https://picup.it{{ picture.picture_thumb.url }}'+'&caption='+encodeURIComponent(document.title)+'&amp;clickthru='+encodeURIComponent(location.href),'','menubar=no,toolbar=no,resizable=no,scrollbars=no,height=400,width=600');return false;"><img src="{% static "images/webicon-tumblr-m.png" %}" alt=""/></a> {% endcomment %}
+
+<a href=""  onclick="window.open('http://www.reddit.com/submit?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title),'das','location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');return false;"> <img src="{% static "images/webicon-reddit-m.png" %}" alt=""/></a>

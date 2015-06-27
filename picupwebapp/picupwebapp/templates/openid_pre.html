@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block header %}
+  <div class="">
+    <div class="rows=""">
+      <div class="large-12 columns">
+        <div class="row">
+          <div class="large-12 columns">
+            <img class="right" width="120" src="{% static "css/webicons/webicon-openid.svg" %}"/>
+            <h2 class="big-header" style="">OpenID Login</h2>
+            <form method="post" action="/login/openid/">
+              {% csrf_token %}
+              <div class="row">
+                <div class="large-12 columns">
+                  <label><h5  class="picup_header">{% trans "OpenID URI" %}:</h5>
+                    <input type="text" name="openid_identifier" placeholder="" />
+                    <input type="submit" class="button expand" value="{% trans "Login" %}"/>
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}{% block content %}
+{% endblock %}{% block bigheader %}
+{% endblock %}.

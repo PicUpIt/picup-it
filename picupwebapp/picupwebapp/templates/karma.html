@@ -1,0 +1,163 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% trans "PicUp - Karma System Explained, Karma Leaders" %}{% endblock %}
+{% block opengraph %}
+<meta property="og:title" content="PicUp, Free Image Hosting Platform" />
+<meta property="og:url" content="https://picup.it/karma/" />
+<meta property="og:image" content="https://picup.it{% static "images/buddha_head.svg" %}" />
+{% block opengraph_description %}<meta property="og:description" content="Karma Leaders and Karma System Explained" />{% endblock opengraph_description %}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicUp.It" />
+{% endblock opengraph %}
+{% block header %}
+<div class="bg-blue">
+  <div class="row bg-blue">
+    <div class="large-12 columns"> 
+      <div class="row">
+        <div class="large-8 columns" style="color:#fff;">
+          {% block bigheader %}
+
+          <h3 class="big-header" style="">Karma leaders</h3>
+          {% endblock %}
+          <div class="row">
+            <div class="large-4 small-6 columns radius">
+              {% if karma_profiles.0.profile_picture %}
+              <img class="th" src="{{ karma_profiles.0.profile_picture.picture_medium.url }}">
+              {% elif karma_profiles.0.user.gallery.first.picture_set.first.picture_thumb.url %}
+              <img class="th" src="{{ karma_profiles.0.user.gallery.first.picture_set.first.picture_medium.url }}">
+              {% else %}
+              <img class="th" src="{{ karma_profiles.0.user.picture_set.first.picture_medium.url }}">
+              {% endif %}
+              <div class="">
+                <h5><a class="button expand"  href="{% url "user_galleries" karma_profiles.0.user.id %}">{{ karma_profiles.0.user.username|truncatechars:15 }} - {{ karma_profiles.0.karma }}</a></h5>
+
+
+              </div>
+            </div>
+
+            <div class="large-4 small-6 columns radius">
+              {% if karma_profiles.1.profile_picture %}
+              <img class="th" src="{{ karma_profiles.1.profile_picture.picture_medium.url }}">
+              {% elif karma_profiles.1.user.gallery.first.picture_set.first.picture_thumb.url %}
+              <img class="th" src="{{ karma_profiles.1.user.gallery.first.picture_set.first.picture_medium.url }}">
+              {% else %}
+              <img class="th" src="{{ karma_profiles.1.user.picture_set.first.picture_medium.url }}">
+              {% endif %}
+              <div class="">
+                <h5><a class="button expand" href="{% url "user_galleries" karma_profiles.1.user.id %}">{{ karma_profiles.1.user.username|truncatechars:15 }} - {{ karma_profiles.1.karma }}</a></h5>
+              </div>
+            </div>
+
+            <div class="large-4 small-6 columns radius">
+              {% if karma_profiles.2.profile_picture %}
+              <img class="th" src="{{ karma_profiles.2.profile_picture.picture_medium.url }}">
+              {% elif karma_profiles.2.user.gallery.first.picture_set.first.picture_thumb.url %}
+              <img class="th" src="{{ karma_profiles.2.user.gallery.first.picture_set.first.picture_medium.url }}">
+              {% else %}
+              <img class="th" src="{{ karma_profiles.2.user.picture_set.first.picture_medium.url }}">
+              {% endif %}
+              <div class="">
+                <h5><a class="button expand" href="{% url "user_galleries" karma_profiles.2.user.id %}">{{ karma_profiles.2.user.username|truncatechars:15 }} - {{ karma_profiles.2.karma }}</a></h5>
+              </div>
+            </div>
+
+
+
+          </div>
+
+
+
+          {% for karma_small in karma_profiles_small %}
+
+          <div class="large-2 small-3 columns radius">
+            {% if karma_small.profile_picture %}
+            <img class="th" src="{{ karma_small.profile_picture.picture_thumb.url }}">
+            {% elif karma_small.user.gallery.first.picture_set.first.picture_thumb.url %}
+            <img class="th" src="{{ karma_small.user.gallery.first.picture_set.first.picture_medium.url }}">
+            {% else %}
+            <img class="th" src="{{ karma_small.user.picture_set.first.picture_medium.url }}">
+            {% endif %}
+            <div class="">
+              <h6 ><a style="font-size: 0.6em" class="button tiny expand" href="{% url "user_galleries" karma_small.user.id %}">{{ karma_small.user.username|truncatechars:8 }} - {{ karma_small.karma }}</a></h6>
+            </div>
+          </div>
+          {% endfor %}
+          <hr/>
+
+          
+
+          {% block quoteheader %}<blockquote style="color:#fff;" class="hide-for-small">I never see what has been done; I only see what remains to be done.<cite style="color:#fff;">Buddha</cite></blockquote>{% endblock %}
+          <hr/>
+          
+
+        </div>
+        <div class="large-4 columns"> 
+         <div class="bg-blue">
+          {% block deer_picture %}<img class="hide-for-small" src="{% static "images/buddha_head.svg" %}" style=""/>{% endblock %}
+        </div>
+
+        <a class="right" target="_blank" href="http://clipartist.info/openclipart.org/SVG/mairin/buddha_head.svg.html">Buddha picture credits</a>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+<div style="background: #007095;">
+  <div class="row style="background: #007095;">
+    <div class="large-12 columns" style="text-shadow: 2px 2px 2px rgba(33, 33, 33, 1);background: #007095;text-color:white;color:white">
+      <h3 class="big-header" style="">Karma system explained</h3>
+
+      <h6 class="big-header" style="">What is the karma?</h6>
+
+      Karma is a simple reputation system. Users may be awarded or punished, depends on their actions inside the PicUp platform.
+
+      <h6 class="big-header" style="">Is it realtime?</h6>
+      No. Karma calculaction happens every 10 minutes. Around :)
+      <h4 class="big-header" style="color:#fff">Accounting - Rules</h4>
+
+      <h5 class="big-header">Awards</h5>
+      <h6 class="big-header">User's points</h6>
+
+
+      <ul>
+        <li>+200 - pioneer (id below 10)</li>
+        <li>+100 - very early user (below 20)</li>
+        <li>+50 - early user (below 100)</li>
+        <li>+25 - adopter (below 1000)</li>
+      </ul>
+
+
+      <h6 class="big-header">Picture's points</h6>
+
+      <ul>
+        <li>+5 - upload of the photo
+        </li>
+        <li>+3 - vote on the photo
+        </li>
+        <li>+1 - set photo in the gallery
+        </li>
+        <li>+100 - launch, link in your profile and verify by stuff application which uses an api
+        </li>
+        <li>+250 - Idea to improve the service which will be implemented
+        </li>
+        <li>+25 - Karma idea
+        </li>
+
+      </ul>
+      <em>Users points will be cumulated.</em>
+      <h5 class="big-header">Punishments</h5>
+
+      <ul>
+        <li>-1 Creating empty gallery</li>
+      </ul>
+
+      <hr/>
+    </div>
+  </div>
+</div>
+{% endblock %}

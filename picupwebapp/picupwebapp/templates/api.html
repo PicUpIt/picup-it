@@ -1,0 +1,173 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block title %}{% trans "PicUp - Karma System Explained, Karma Leaders" %}{% endblock %}
+{% block opengraph %}
+<meta property="og:title" content="#PicUp API Explained" />
+<meta property="og:url" content="https://picup.it/api/" />
+<meta property="og:image" content="https://picup.it{% static "images/buddha_head.svg" %}" />
+{% block opengraph_description %}<meta property="og:description" content="PicUp.It API" />{% endblock opengraph_description %}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="PicUp.It" />
+{% endblock opengraph %}
+{% block "header_1"%}{% endblock "header_1"%}
+{% block "header_2"%}{% trans "PicUp It API explained" %}{% endblock "header_2"%}
+{% block "subheader_1" %}{% endblock "subheader_1" %}
+{% block "subheader_2" %}
+{% endblock "subheader_2" %}
+
+
+{% block content %}<div class=" large-12 columns " style="background-color:#333; text-color:white;color:white">
+      <div class="row bg-white">
+        <div class="large-12 columns imagelist" style="">
+          <center>
+          <h6 class="uc font_shadow "><strong>what is an api?</strong></h6>
+                  </center>
+
+            <p>PicUp API is an application programming interface which allows you to create your own application using PicUp platform as a backend. To seehow it works you can try FirefoxOS proof of concept application: <a href="https://github.com/PicUpIt/picup-ffos">https://github.com/PicUpIt/picup-ffos</a></p>
+          
+        </div>
+      </div>
+    </div>
+<style>
+
+pre {
+  background: #111111;
+  padding: 10px;
+  margin-bottom: 10px;
+  -webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+-webkit-box-shadow: 4px 4px 13px 0px rgba(0,0,0,0.81);
+-moz-box-shadow: 4px 4px 13px 0px rgba(0,0,0,0.81);
+box-shadow: 4px 4px 13px 0px rgba(0,0,0,0.81);
+
+}
+
+</style>
+    <div class="large-12 columns imagelist" style="background-color:#333">
+      <div class="row bg-white">
+<p></p>
+      </div>
+    </div>
+
+<div>
+  <div class="row" style="">
+    <div class="large-12 columns" style="text-shadow: 2px 2px 2px rgba(33, 33, 33, 1);text-color:white;color:white">
+      
+
+          <h5 class="uc font_shadow "><strong>Protocol</strong></h5>
+<p>PicUp API is using regular HTTP GET/POST communication. Authentication tokens - if needed - (username - email and api_key) are passed as POST keys (<em>email</em> and <em>api_key</em>).</p>
+
+          <h5 class="uc font_shadow "><strong>API Credentials</strong></h5>
+          <p>To get your <em>api_key</em> please login and go to your DeerBox.</p>
+<h5 class="uc font_shadow "><strong>Implemented calls</strong></h5>
+
+
+<h6 class="uc font_shadow "><strong>{% trans "Get user" %}</strong></h6>
+<pre>/api/user/ID</pre>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/user/2/
+
+  {"username": "bluszcz", 
+    "pictures": [
+      {"id": 29, "thumb": "/media/thumbs/776724ac47cb8e9cf5a6053e93757065_5.jpg"}, 
+    "galleries": [
+      {"thumb": "/media/thumbs/be609302a10c5c1f4fde9210f9a83523_3.jpg", "user_id": 2, 
+        "id": 1, "title": "PicUp progress"}, [...]
+</pre>
+
+<h6 class="uc font_shadow "><strong>{% trans "Get gallery" %}</strong></h6>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/gallery/2/
+
+  {"thumb": "/media/thumbs/fc9993b9a523624a71cd4b5717eb3446_3.jpg", 
+    "pictures": [
+      {"id": 120, "thumb": "/media/thumbs/b203a03aca3aad99e18c2b72f0521ced_3.jpg"}, 
+      {"id": 121, "thumb": "/media/thumbs/018a35ca3c66b297438c9af133c90174_3.jpg"}, 
+      {"id": 118, "thumb": "/media/thumbs/fc9993b9a523624a71cd4b5717eb3446_3.jpg"}, [...]
+</pre>
+
+<h6 class="uc font_shadow "><strong>{% trans "Get picture" %}</strong></h6>
+<pre>/api/picture/ID</pre>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/picture/666/
+  
+  {"id": 666, "thumb": "/media/thumbs/378f4fac571dea131df81972f41e9176.jpg"}
+</pre>
+
+
+<h6 class="uc font_shadow "><strong>{% trans "Get recommended galleries and users" %}</strong></h6>
+<pre>/api/browse/</pre>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/browse/
+
+  {"galleries": [
+    {"thumb": "/media/thumbs/98f1c2067b483e25e8c77ab3c919ad8f.jpg", 
+      "user_id": 2, "id": 77, 
+      "title": "Warsaw, Poland 2012"}, 
+    {"thumb": "/media/thumbs/8a24e2476794b000ec56894fb01f3236.jpg", 
+      "user_id": 2, "id": 76, 
+      "title": "Frida Kahlo, Podkowa Lesna, Poland 2012"}, 
+    {"thumb": "/media/thumbs/4c4fc2113229bed61b3ba6f13938c127.jpg", 
+      "user_id": 34, "id": 69, "title": "EXTREMA @ FRT"},  [...]
+  {users": [
+    {"username": "pikkulintu", "id": 55, 
+      "thumb": "/media/thumbs/12382412bb5e6078ebec81da111515e9.jpg"}, 
+    {"username": "yves.marechal.1978", "id": 52, 
+      "thumb": "/media/thumbs/11560dd19e139b1ce329fa5f33d88186.jpg"}, [...]
+</pre>
+
+<h6 class="uc font_shadow "><strong>{% trans "Get recommended galleries " %}</strong></h6>
+<pre>/api/browse/galleries/</pre>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/browse/galleries/
+
+  {"galleries": [
+    {"thumb": "/media/thumbs/98f1c2067b483e25e8c77ab3c919ad8f.jpg", 
+      "user_id": 2, "id": 77, "title": "Warsaw, Poland 2012"}, 
+    {"thumb": "/media/thumbs/8a24e2476794b000ec56894fb01f3236.jpg", 
+      "user_id": 2, "id": 76, "title": "Frida Kahlo, Podkowa Lesna, Poland 2012"}, 
+    {"thumb": "/media/thumbs/84d46de6e69f23b7f18582009f37c50a_1.jpg", 
+      "user_id": 2, "id": 75, "title": "Books"},  [...]
+</pre>
+<h6 class="uc font_shadow "><strong>{% trans "Get recommended users" %}</strong></h6>
+<pre>/api/browse/users/</pre>
+<p>Example</p>
+<pre>$ curl https://picup.it/api/browse/users/
+
+  {users": [
+    {"username": "pikkulintu", "id": 55, 
+      "thumb": "/media/thumbs/12382412bb5e6078ebec81da111515e9.jpg"}, 
+    {"username": "yves.marechal.1978", "id": 52, 
+      "thumb": "/media/thumbs/11560dd19e139b1ce329fa5f33d88186.jpg"}, [...]
+</pre>
+
+<h6 class="uc font_shadow "><strong>{% trans "Test of authentcation" %}</strong></h6>
+<pre>/api/auth/</pre>
+<p>Example</p>
+
+<pre>$ curl -F username=username@example.com \
+     -F api_key=2323232323 \
+     https://piciup.it/api/auth/
+{"status": "OK"}
+</pre>
+<h6 class="uc font_shadow "><strong>{% trans "Upload of the picture" %}</strong></h6>
+
+
+<pre>/api/upload/</pre>
+<p>Example</p>
+<pre class="round">$ curl -F picture=@launchpad.jpg \
+    @launchpad.jpg \
+     -F api_key=2323232323 \
+     https://piciup.it/api/upload/
+{"status": "OK"}
+</pre>
+
+          <hr/>
+          <h6 class="big-header">{% trans "Support / help" %}</h6>
+<p>Please ask on Diaspora* social network with hashtag #picup.</p>
+<p>More methods and documentation are coming soon.</p>
+
+        </div>
+        </div>
+        </div>
+{% endblock %}

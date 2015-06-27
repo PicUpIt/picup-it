@@ -1,0 +1,65 @@
+{% extends "homepage.html" %}{% load i18n static %}
+{% block content %}
+
+<section role="main">
+<div class="  bg-white row">
+  <div class="large-3 column">
+    <div class="centered" style="margin-top:40px" >
+      <form>
+        <label style="color:white;">Select license:</label>
+          <ul class="side-nav"> 
+            {% for license in checkbox_licenses %}  <li><input class="license_search" value="{{ license.0 }} " id="lcheckbox{{license.0}}" type="checkbox"><label for="lcheckbox{{license.0}}" style="color:white;">{{ license.1 }}</label></li> 
+{% endfor %}
+ </ul>
+
+              </form>
+            </div>
+          </div>
+
+
+    <div class="large-9  column">
+
+      {% block bigheader %}
+        {% if galleries %}
+        <div class="row " id="browseThumbs">
+
+          {% include "inc_thumbsbox.html" %}
+        </div>
+        {% endif %}
+      {% endblock %}
+      <p>&nbsp;</p>
+    </div>
+  </div>
+
+</section>
+{% endblock content %}
+{% block opengraph_description %}<meta property="og:description" content="Browse Pictures" />{% endblock opengraph_description %}
+{% block header %}
+{% endblock %}
+{% block quoteheader %}{% endblock %}
+  {% block body_js %}
+  {% block extra_body_js %}
+
+<script>
+  $(function() {
+    $('.license_search').click(function()
+    {
+      $("#browseThumbs").html('<img style=\"margin-top:40px\" src="{% static "images/ajax-loader.gif" %}" width="550"/>');
+      checkboxes = $('.license_search').filter(function(index) {return this.checked===true;});
+      checkboxes2 = checkboxes.map(function(index){return checkboxes[index].value});
+      checkboxes = [];
+      checkboxes2.each(function( index ) {
+        checkboxes.push(checkboxes2[index]);
+    });
+      $.get('/int_call/simply_browse', {licenses:checkboxes},
+        function(data){
+          $("#browseThumbs").html(data);
+        });
+
+    });
+  
+});
+</script>
+
+  {% endblock %}
+  {% endblock body_js %}

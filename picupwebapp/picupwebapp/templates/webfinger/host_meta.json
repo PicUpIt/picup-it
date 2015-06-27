@@ -1,0 +1,1 @@
+{"links":[{"rel":"lrdd","type":"application\/jrd+json","template":"https:\/\/picup.it\/.well-known\/webfinger?resource={uri}"},{"rel":"lrdd","type":"application\/json","template":"http:\/\/quitter.se\/.well-known\/webfinger?resource={uri}"},{"rel":"lrdd","type":"application\/xrd+xml","template":"https:\/\/picup.it\/.well-known\/webfinger?resource={uri}"}]}

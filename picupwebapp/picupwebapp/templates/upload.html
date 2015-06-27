@@ -1,0 +1,142 @@
+{% extends "base.html" %}{% load static i18n %}
+{% block header %}
+<div class="" style="background-color: #222">
+  <div class="row">
+    <div class="large-12 columns"> 
+      <div class="row">
+        <div class="large-8 columns">
+          {% block bigheader %}
+          {% endblock %}
+          <h6 style="color:#fff;" class="uc font_shadow"><strong>After the upload you should go to your <a class="button tiny" href="{% url "deerbox" %}">DeerBox</a> to manage and share your pictures.<strong></h6>
+        <select style="color:black; background-color:white" id="idGalleryUpload">
+          <option value="0">{% trans "Choose gallery" %}</option>
+          {% for gallery in galleries %} {{ preffered_gallery }}
+          <option value="{{ gallery.id }}" {% if gallery.id == preffered_gallery %}selected="selected"{% endif %}>{{ gallery.title }}</option>
+          {% endfor %}
+        </select>
+
+    {% if user.is_authenticated %}
+    <div id="picup_droparea">
+     <form id="my-dropzone" class="dropzone" action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+    </form>
+    <script type="text/javascript">
+    Dropzone.options.myDropzone = {
+      paramName: "picture",
+      maxFilesize: 4,
+      // Prevents Dropzone from uploading dropped files immediately
+      autoProcessQueue : true,
+
+      init : function() 
+      {
+        var submitButton = document.querySelector("#submit-all");
+        myDropzone = this;
+
+        submitButton.addEventListener("click", function() 
+        {
+          myDropzone.processQueue();
+          // Tell Dropzone to process all queued files.
+        });
+
+        // You might want to show the submit button only when
+        // files are dropped here:
+        this.on("complete", function(file) {
+          $parsed_json = $.parseJSON(file.xhr.responseText);
+          var url = $parsed_json['url'];
+          var $picture_id = $parsed_json['id'];
+          
+          $gallery_id = $('#idGalleryUpload').val();
+          if ($gallery_id>0)
+          {
+            $.post("{% url "intcall_gallery" %}", {
+            'insert_picture':true,
+            'gallery_id':  $gallery_id,
+            'picture_id': $picture_id});
+
+            var $html = '<li><a href="/deerbox/gallery/' + $gallery_id+ '/"><img src="'+url+'" class="th"></a></li>';
+          } else
+          {
+          var $html = '<li><a href="{% url "accounts_profile" %}"><img src="'+url+'" class="th"></a></li>';  
+          }
+          
+          var $parsed_html = $.parseHTML($html);
+          $('#uploaded_image').append($parsed_html);
+          this.removeFile(file);
+        });
+        this.on("addedfile", function() {
+        // Show submit button here and/or inform user to click it.
+      });
+
+      }
+    };
+    </script>
+  </div>
+  
+
+  {% endif %}
+
+
+        </div>
+        <div class="large-4 columns"> 
+         <div class="">
+          <center><img src="{% static "images/deer.svg" %}"  width="200" style=""/></center>
+           <button id="submit-all" class="right" style="display:none">PIC-ture UP-load</button>
+              <ul  id="uploaded_image" class="small-block-grid-4"></ul>
+              </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+            <div class="large-12 columns">
+             
+
+          </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
+{% block content %}
+<div class="bg-blue"/>
+<div class="row">
+  <div class="large-12 columns">
+
+
+
+  
+  <!-- Desktop Slider -->
+
+  <div class="hide-for-small">
+    <div id="featured">
+      <img id="featured_big_image" alt="slide image"/ style="display:none" class="th">
+      {# <img id="featured_big_image" alt="slide image" src="http://placehold.it/1000x400&amp;text=PICUP%20IT"> #}
+
+
+
+    </div>
+
+  </div><!-- End Desktop Slider -->
+
+
+  {% if not user.is_authenticated %}
+
+  {% if  picture_feat.picture_thumb.url %}
+
+  <div class="large-4 columns hide-for-small">
+    <center><img class="th" src=" {{ picture_feat.picture_thumb.url }}"/></center>
+
+    <!-- Include BrowserID JavaScript -->
+
+
+
+    <!-- Setup click handler that retieves Persona assertion code and sends POST data -->
+
+
+  </div>
+  {% endif %}
+  {% endif %}
+  <!-- End Content -->
+</div>
+</div>
+</div>
+{% endblock content %}

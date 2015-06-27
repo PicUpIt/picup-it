@@ -1,0 +1,173 @@
+{% extends "foundation/base.html" %}{% load i18n static foundation_tags  %}
+{% block foundation_js %}
+  <script src="{% static "foundation/js/foundation.min.js" %}"></script>
+  
+  <script src="{% static "foundation/js/foundation/foundation.equalizer.js" %}"></script>
+  <script src="{% static "foundation/js/foundation/foundation.magellan.js" %}"></script>
+{% endblock foundation_js %}
+
+{% block foundation_css %}
+  {% foundation_css "normalize" %}
+  {% foundation_css "foundation.min" %}
+{% endblock foundation_css %}  
+
+{% block meta %}<meta name="google-site-verification" content="B0OcQ9h9RrJo5Ji7YHKl7d_zfWtaVOpfkXMHU-z757I" />
+  {% block meta_desc %}<meta name="description" content="PicUp, Free Image Pictures Photo Hosting Platform">{% endblock %}
+  {% block meta_author %}<meta name="author" content="bluszcz">{% endblock %}
+  <meta name="keywords" content="PicUp,Diaspora,Free,Image,Picture,Photo,Hosting,Platform,Gallery,Album" />
+  <meta name="p:domain_verify" content="eebf0025222cf3e98a054819610276fd"/>
+  {% block opengraph %}
+    <meta property="og:title" content="PicUp, Free Image Hosting Platform" />
+    <meta property="twitter:site" content="picupit" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="PicUp, Free Image Hosting Platform" />
+    <meta property="og:url" content="https://picup.it/" />
+    {% if picture_feat %}
+      <meta property="og:image" content="https://picup.it{{ picture_feat.picture_thumb.url }}" />
+      <meta property="twitter:image" content="https://picup.it{{ picture_feat.picture_medium.url }}" />
+    {% endif %}
+    {% block opengraph_description %}
+      <meta property="og:description" content="Alternative pictures upload and sharing focused on Diaspora* users" />
+      <meta property="twitter:description" content="Alternative pictures upload and sharing focused on Diaspora* users" />
+    {% endblock opengraph_description %}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PicUp.It" />
+  {% endblock opengraph %}
+{% endblock meta %}{% block title %}PicUp - Simple and Easy Pictures upload and sharing, Free image hosting platform{% endblock %}
+{% block head_js %}<!-- Piwik -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["trackPageView"]);
+  _paq.push(["enableLinkTracking"]);
+
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://s.glam.pl/";
+    _paq.push(["setTrackerUrl", u+"piwik.php"]);
+    _paq.push(["setSiteId", "2"]);
+    var d=document, g=d.createElement("script"), s=d.getElementsByTagName("script")[0]; g.type="text/javascript";
+    g.defer=true; g.async=true; g.src=u+"piwik.js"; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Piwik Code -->
+<script type="text/javascript" src="{% static "js/dropzone.js" %}" ></script>
+
+
+{% endblock head_js %}
+{% block css %}{% foundation_css 'foundation-icons' %}
+  <link rel="stylesheet" href="{% static "css/webicons.css" %}" />
+  <link rel="stylesheet" href="{% static "css/picup.css?v=2" %}" />
+  <link rel="stylesheet" href="{% static "css/dropzone.css" %}" />
+  <link rel="stylesheet" href="{% static "css/slick.css" %}" />
+{% endblock %}
+{% block base_body %}{% block top_bar %}
+<!-- Header and Nav -->
+<div class="fixed  sticky">
+<nav class="top-bar" data-topbar>
+  <ul class="title-area" data-options="sticky_on: large">
+    <!-- Title Area -->
+    <li class="name">
+      <h1><a href="/">picup <img width="30" src="{% static "images/deer.svg" %}" style=""/> IT</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span>menu</span></a>
+    </li>
+    <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+  </ul>
+
+  <section class="top-bar-section">
+    <!-- Left Nav Section -->
+    <ul class="left">
+      <li class="divider"></li>
+      <li><a href="{% url "browse" %}">{% trans "Browse Creative Commons" %}</a></li>
+            <li class="divider"></li>
+
+      {% comment %}
+      <li class="divider"></li>
+      <li><a href="{% url "karma" %}">{% trans "Karma" %}{% if auth_picup_profile %} +{{ auth_picup_profile.karma }}{% endif %}</a></li>
+      <li class="divider"></li>
+      {% endcomment %}
+      <li><a href="{% url "api" %}">{% trans "API" %}</a></li>      
+      <li class="divider"></li>
+    </ul>
+
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="divider"></li>
+ 
+
+      {% if user.is_authenticated %}
+      <li class="has-dropdown">
+        <a href="{% url "deerbox" %}">DeerBox <img src="{{ gravatar_url }}" width="20" height="20"/></a>
+        <ul class="dropdown">
+          <li><a href="{% url "upload" %}" >Upload more pictures</a></li>
+          <li><a href="/accounts/logout/">{% trans "Logout"%}</a></li>
+        </ul>
+      </li>
+      {% else %}
+                <li><a href="{% url "signin" %}" >{% trans "Sign In" %}</a></li>
+
+      {% endif %}
+    
+  </ul>
+</section>
+</nav>
+</div>
+
+<!-- End Header and Nav -->
+{% endblock top_bar %}{% block header %}
+<style>
+.imagelist li{
+  Padding:0;
+  margin:0;
+}
+</style>
+    <div class="large-12 columns imagelist" style="background-color:#555">
+      <div class="row bg-white">
+        <div class="large-12 columns imagelist" style="">
+          <center>
+            <h2 class="uc font_shadow "><strong>{% block "header_1"%}PicUp It{% endblock "header_1"%}</strong></h2>
+              <h3 class="uc font_shadow "><strong>{% block "header_2"%}FREE IMAGE HOSTING PLATFORM{% endblock "header_2"%}</strong></h3>
+          </center>
+          {% block "subheader_1" %}
+
+           {% endblock "subheader_1" %}
+
+        </div>
+      </div>
+    </div>
+{% block subheader_2 %}
+
+    {% endblock subheader_2 %}
+{% endblock header %}
+{% block content %}{% endblock content %}
+<!-- Footer -->
+<footer class="row small_uppercase_bold white shadow">
+  <div class="large-12 columns picup_header">
+    <div class="row">
+      <div class="large-6 columns">
+        <p style="font-size:0.8em">     <a href="{% url "tos" %}">{% trans "Terms Of Service / Privacy Policy" %}</a>
+ <a class="right" href="http://commons.wikimedia.org/wiki/File:Deer_(Nizhny_Novgorod).svg">deer - Nizhny Novgorod</a></p>
+      </div>
+
+      <div class="large-6 columns" >
+        <ul class="inline-list right" style="font-size:0.8em">
+          <li>
+            <a href="https://idoru.pl">Idoru - Diaspora Pod</a>
+          </li>
+
+          <li>
+            <a href="https://jabberpl.org">JabberPL.org XMPP Server</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <center></image>
+    </div>
+  </footer>
+
+
+  {% endblock base_body %}
+
+  {% block body_js %}
+  {% block extra_body_js %}{% endblock %}
+  {% endblock body_js %}

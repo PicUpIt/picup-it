@@ -1,0 +1,77 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block "subheader_1" %}{% endblock "subheader_1" %}
+{% block subheader_2 %}{% endblock subheader_2 %}
+{% block content %}
+        
+<div class="row" style="margin-bottom:20px">
+  <div class="large-12  small-12 column" style="color:white">
+    <div class="row"  style="margin-top:20px">
+
+
+
+
+      <h6 class="uc font_shadow"><center><strong>PicUp It</strong> - free image hosting platform built on the top of Open Source components with the following features:</center></h6>
+
+<ul class="small-block-grid-6 medium-block-grid-12  large-block-grid-12"> 
+  <li><img src="{% static 'images/hp/cc.png'%}" alt="Creative Commons licensing" title="Creative Commons licensing"/></li> 
+  <li><img src="{% static 'images/hp/md.png'%}" alt="Markdown social network support" title="Markdown social network support"/></li> 
+  <li><img src="{% static 'images/hp/dc.png'%}" alt="Dublin Core Metadata" title="Dublin Core Metadata"/></li> 
+  <li><img src="{% static 'images/hp/rss.png'%}" alt=">RSS feeds for users and galleries<" title=">RSS feeds for users and galleries<"/></li> 
+  <li><img src="{% static 'images/hp/og.png'%}" alt="Facebook OpenGraph" title="Facebook OpenGraph"/></li> 
+  <li><img src="{% static 'images/hp/diaspora.png'%}" alt="Diaspora friendly" title="Diaspora friendly"/></li> 
+  <li><img src="{% static 'images/hp/mp.png'%}" alt="Mozilla Persona" title="Mozilla Persona"/></li> 
+  <li><img src="{% static 'images/hp/oi.png'%}" alt="OpenID login" title="OpenID login"/></li> 
+
+<li><img src="{% static 'images/hp/gh.png'%}" alt="Github signin" title="Github signin"/></li> 
+
+<li><img src="{% static 'images/hp/fos.png'%}" alt="FirefoxOS app (dev)" title="FirefoxOS app (dev)"/></li> 
+<li><img src="{% static 'images/hp/twitter.png'%}" alt="Twitter cards" title="Twitter cards"/></li> 
+<li><img src="{% static 'images/hp/api.png'%}" alt=Simply API"" title="Simply API"/></li> 
+
+
+
+  <li><!-- Your content goes here --></li>
+   <li><!-- Your content goes here --></li> 
+ </ul>
+     
+      </div>
+  </div>
+
+   <div class="large-12 small-12 column">
+    <div class="row">
+   {% include "inc_thumbsbox.html" %}
+</div>
+</div>
+
+</div>
+<center>
+<div class="large-8 small-8">
+<div class="picupitslide row">{% for banner in banners %} 
+<div><center><a class="th" href="{% url "picture_view" banner.picture.id %}"><img src="{{ banner.picture.picture_medium.url }}"/> </a>
+</center></div>
+  {% endfor %}
+  </div>
+
+
+
+</div>
+</center>
+{% endblock %}
+{% block header %}{% if galleries %}{% endif %}{% endblock header %}
+  {% block body_js %}
+  {% block extra_body_js %}<script type="text/javascript" src="{% static "js/slick.min.js"%}"></script>
+  <script>
+$(document).ready(function(){
+  $('.picupitslide').slick({
+  infinite: true,
+  slidesToShow: 5,
+  adaptiveHeight: true,
+  lazyLoad: 'ondemand',
+  slidesToScroll: 2,
+  centerMode:true
+  });
+});
+  
+</script>
+{% endblock %}
+  {% endblock body_js %}

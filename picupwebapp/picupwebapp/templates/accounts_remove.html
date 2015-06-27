@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% load i18n static %}
+{% block header %}
+<div class="">
+  <div class="rows=""">
+    <div class="large-12 columns"> 
+      <div class="row">
+        <div class="large-12 columns">
+<h1>
+<h2 class="big-header" style="">{% trans "Remove an account" %}<i class="fi-alert right"></i></h2>
+
+<form method="post" action="{% url "accounts_remove" %}">
+	{% csrf_token %} 
+  <div class="row">
+    <div class="large-12 columns">
+      
+</h1>
+      <h5  class="picup_header">{% trans "Warning" %}</h5>                    
+        <div class="panel"><p>This is a one way operation. All your data will be lost forever, like tears in a rain.</p></div>
+        <a href="{% url "deerbox" %}"><button>{% trans "I want go back to DeerBox" %}</button></a>
+        <button class="right alert">{% trans "Remove the account" %}</button>
+      
+    </div>
+  </div>
+</form>
+        </div>
+ 
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}{% block content %}
+
+
+{% endblock %}{% block bigheader %}
+
+
+
+
+{% endblock %}.

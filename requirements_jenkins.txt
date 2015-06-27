@@ -1,0 +1,9 @@
+django-jenkins
+coverage
+pep8
+pylint
+pylint-django
+pyflakes
+selenium
+flake8
+geoffrey-csslint

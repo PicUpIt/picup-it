@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom" xmlns:thr="http://purl.org/syndication/thread/1.0" xmlns:georss="http://www.georss.org/georss" xmlns:activity="http://activitystrea.ms/spec/1.0/" xmlns:media="http://purl.org/syndication/atommedia" xmlns:poco="http://portablecontacts.net/spec/1.0" xmlns:ostatus="http://ostatus.org/schema/1.0" xmlns:statusnet="http://status.net/schema/api/1/">
+ <generator uri="http://status.net" version="1.1.1-alpha2">StatusNet</generator>
+ <id>http://quitter.se/api/statuses/user_timeline/picup.atom</id>
+ <title>picup timeline</title>
+ <subtitle>Updates from picup on Quitter!</subtitle>
+ <logo>http://quitter.se/avatar/117046-96-20140310132619.png</logo>
+ <updated>2014-11-01T16:22:09+01:00</updated>
+<author>
+ <activity:object-type>http://activitystrea.ms/schema/1.0/person</activity:object-type>
+ <uri>http://quitter.se/user/117046</uri>
+ <name>picup</name>
+ <summary>Picture Upload and Sharing done right</summary>
+ <link rel="alternate" type="text/html" href="http://quitter.se/picup"/>
+ <link rel="avatar" type="image/png" media:width="170" media:height="170" href="http://quitter.se/avatar/117046-170-20140310132619.png"/>
+ <link rel="avatar" type="image/png" media:width="96" media:height="96" href="http://quitter.se/avatar/117046-96-20140310132619.png"/>
+ <link rel="avatar" type="image/png" media:width="48" media:height="48" href="http://quitter.se/avatar/117046-48-20140310132619.png"/>
+ <link rel="avatar" type="image/png" media:width="24" media:height="24" href="http://quitter.se/avatar/117046-24-20140310132619.png"/>
+ <poco:preferredUsername>picup</poco:preferredUsername>
+ <poco:displayName>PicUp Pictures Upload</poco:displayName>
+ <poco:note>Picture Upload and Sharing done right</poco:note>
+ <poco:address>
+  <poco:formatted>Barcelona</poco:formatted>
+ </poco:address>
+ <poco:urls>
+  <poco:type>homepage</poco:type>
+  <poco:value>https://picup.it</poco:value>
+  <poco:primary>true</poco:primary>
+ </poco:urls>
+ <followers url="http://quitter.se/picup/subscribers"></followers>
+ <statusnet:profile_info local_id="117046" following="true" blocking="false"></statusnet:profile_info>
+</author>
+ <link href="http://quitter.se/picup" rel="alternate" type="text/html"/>
+ <link href="http://quitter.se/main/sup" rel="http://api.friendfeed.com/2008/03#sup" type="application/json"/>
+ <link href="http://quitter.se/api/statuses/user_timeline/117046.atom?max_id=2469576" rel="next" type="application/atom+xml"/>
+ <link href="http://quitter.se/main/push/hub" rel="hub"/>
+ <link href="http://quitter.se/main/salmon/user/117046" rel="salmon"/>
+ <link href="http://quitter.se/main/salmon/user/117046" rel="http://salmon-protocol.org/ns/salmon-replies"/>
+ <link href="http://quitter.se/main/salmon/user/117046" rel="http://salmon-protocol.org/ns/salmon-mention"/>
+ <link href="http://quitter.se/api/statuses/user_timeline/picup.atom" rel="self" type="application/atom+xml"/>
+<entry>
+ <id>tag:quitter.se,2014-11-01:noticeId=3016855:objectType=note</id>
+ <title>picup repeated a notice by akifo</title>
+ <content type="html">RT @&lt;a href=&quot;http://quitter.se/user/121390&quot; class=&quot;h-card mention&quot; title=&quot;akifo&quot;&gt;akifo&lt;/a&gt; ♲ Sandra Kanela (&lt;a href=&quot;mailto:kanela@diasp.eu&quot; title=&quot;mailto:kanela@diasp.eu&quot; rel=&quot;nofollow external&quot;&gt;kanela@diasp.eu&lt;/a&gt;):&lt;br /&gt; I had some weird &amp;quot;dreams&amp;quot; these days. Fantasy-Ink-Bat.&lt;br /&gt; &lt;a href=&quot;https://picup.it/p/8193/&quot; title=&quot;https://picup.it/p/8193/&quot; class=&quot;attachment&quot; id=&quot;attachment-713285&quot; rel=&quot;nofollow external&quot;&gt;https://picup.it/p/8193/&lt;/a&gt; &lt;br /&gt; &lt;a href=&quot;http://ur1/&quot; title=&quot;http://ur1/&quot; class=&quot;attachment&quot; id=&quot;attachment-548169&quot; rel=&quot;nofollow external&quot;&gt;http://ur1&lt;/a&gt; ...</content>
+ <link rel="alternate" type="text/html">http://quitter.se/notice/3016855</link>
+ <activity:verb>http://activitystrea.ms/schema/1.0/share</activity:verb>
+ <published>2014-11-01T14:20:55+00:00</published>
+ <updated>2014-11-01T14:20:55+00:00</updated>
+ <activity:object>
+  <activity:object-type>http://activitystrea.ms/schema/1.0/activity</activity:object-type>
+  <id>http://quitter.se/notice/2860997</id>
+  <title></title>
+  <content type="html">♲ Sandra Kanela (&lt;a href=&quot;mailto:kanela@diasp.eu&quot; title=&quot;mailto:kanela@diasp.eu&quot; rel=&quot;nofollow external&quot;&gt;kanela@diasp.eu&lt;/a&gt;): I had some weird &amp;quot;dreams&amp;quot; these days. Fantasy-Ink-Bat. &lt;a href=&quot;https://picup.it/p/8193/&quot; title=&quot;https://picup.it/p/8193/&quot; rel=&quot;nofollow external&quot;&gt;https://picup.it/p/8193/&lt;/a&gt;  &lt;a href=&quot;http://ur1.ca/i5wu6&quot; title=&quot;http://ur1.ca/i5wu6&quot; rel=&quot;nofollow external&quot;&gt;http://ur1.ca/i5wu6&lt;/a&gt;</content>
+  <link rel="alternate" type="text/html">http://quitter.se/notice/2860997</link>
+  <activity:verb>http://activitystrea.ms/schema/1.0/post</activity:verb>
+  <published>2014-09-10T13:51:44+00:00</published>
+  <updated>2014-09-10T13:51:44+00:00</updated>
+  <author>
+   <activity:object-type>http://activitystrea.ms/schema/1.0/person</activity:object-type>
+   <uri>http://quitter.se/user/121390</uri>
+   <name>akifo</name>
+   <summary>Satanist, vegeterian, yogi, knife fan, cypherpunk. Bitmessage:BM-2cUBB2sXo7yKRU1GkjT3ToznBMy5Sj9PCi</summary>
+   <link rel="alternate" type="text/html" href="http://quitter.se/akifo"/>
+   <link rel="avatar" type="image/png" media:width="162" media:height="162" href="http://quitter.se/avatar/121390-162-20140828174422.png"/>
+   <link rel="avatar" type="image/png" media:width="96" media:height="96" href="http://quitter.se/avatar/121390-96-20140828174422.png"/>
+   <link rel="avatar" type="image/png" media:width="48" media:height="48" href="http://quitter.se/avatar/121390-48-20140828174422.png"/>
+   <link rel="avatar" type="image/png" media:width="24" media:height="24" href="http://quitter.se/avatar/121390-24-20140828174422.png"/>
+   <poco:preferredUsername>akifo</poco:preferredUsername>
+   <poco:displayName>akifo</poco:displayName>
+   <poco:note>Satanist, vegeterian, yogi, knife fan, cypherpunk. Bitmessage:BM-2cUBB2sXo7yKRU1GkjT3ToznBMy5Sj9PCi</poco:note>
+   <poco:address>
+    <poco:formatted>Earth</poco:formatted>
+   </poco:address>
+   <poco:urls>
+    <poco:type>homepage</poco:type>
+    <poco:value>https://blog.akifo.pw</poco:value>
+    <poco:primary>true</poco:primary>
+   </poco:urls>
+   <followers url="http://quitter.se/akifo/subscribers"></followers>
+   <statusnet:profile_info local_id="121390" following="false" blocking="false"></statusnet:profile_info>
+  </author>
+  <activity:object>
+   <activity:object-type>http://activitystrea.ms/schema/1.0/note</activity:object-type>
+   <id>http://quitter.se/notice/2860997</id>
+   <title>New note by akifo</title>
+   <content type="html">♲ Sandra Kanela (&lt;a href=&quot;mailto:kanela@diasp.eu&quot; title=&quot;mailto:kanela@diasp.eu&quot; rel=&quot;nofollow external&quot;&gt;kanela@diasp.eu&lt;/a&gt;): I had some weird &amp;quot;dreams&amp;quot; these days. Fantasy-Ink-Bat. &lt;a href=&quot;https://picup.it/p/8193/&quot; title=&quot;https://picup.it/p/8193/&quot; rel=&quot;nofollow external&quot;&gt;https://picup.it/p/8193/&lt;/a&gt;  &lt;a href=&quot;http://ur1.ca/i5wu6&quot; title=&quot;http://ur1.ca/i5wu6&quot; rel=&quot;nofollow external&quot;&gt;http://ur1.ca/i5wu6&lt;/a&gt;</content>
+   <link rel="alternate" type="text/html" href="http://quitter.se/notice/2860997"/>
+   <status_net notice_id="2860997"></status_net>
+  </activity:object>
+  <link rel="ostatus:conversation" href="http://quitter.se/conversation/2362758"/>
+  <link rel="mentioned" ostatus:object-type="http://activitystrea.ms/schema/1.0/collection" href="http://activityschema.org/collection/public"/>
+  <source>
+   <id>http://quitter.se/api/statuses/user_timeline/121390.atom</id>
+   <title>akifo</title>
+   <link rel="alternate" type="text/html" href="http://quitter.se/akifo"/>
+   <link rel="self" type="application/atom+xml" href="http://quitter.se/api/statuses/user_timeline/121390.atom"/>
+   <link rel="license" href="http://creativecommons.org/licenses/by/3.0/"/>
+   <icon>http://quitter.se/avatar/121390-96-20140828174422.png</icon>
+   <updated>2014-09-26T07:44:46+00:00</updated>
+  </source>
+  <link rel="self" type="application/atom+xml" href="http://quitter.se/api/statuses/show/2860997.atom"/>
+  <link rel="edit" type="application/atom+xml" href="http://quitter.se/api/statuses/show/2860997.atom"/>
+ </activity:object>
+ <link rel="ostatus:conversation" href="http://quitter.se/conversation/2362758"/>
+ <link rel="mentioned" ostatus:object-type="http://activitystrea.ms/schema/1.0/collection" href="http://activityschema.org/collection/public"/>
+ <link rel="self" type="application/atom+xml" href="http://quitter.se/api/statuses/show/3016855.atom"/>
+ <link rel="edit" type="application/atom+xml" href="http://quitter.se/api/statuses/show/3016855.atom"/>
+ <statusnet:notice_info local_id="3016855" source="Qvitter" repeated="false" repeat_of="2860997" favorite="false"></statusnet:notice_info>
+</entry>
+
+</feed>
