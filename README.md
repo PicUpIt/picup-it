@@ -1,10 +1,15 @@
 PicUp It
 ========
 
+Introduction
+------------
+Sources for https://picup.it/ image sharing platform.
+
 Installation
 ------------
 
-I suggest to use virtualenv. Below is my installation script with project checkouted in ~/repo/
+I suggest to use virtualenv. Below is my installation script with a project
+checkouted in ~/repo/
 
 
 ```bash
