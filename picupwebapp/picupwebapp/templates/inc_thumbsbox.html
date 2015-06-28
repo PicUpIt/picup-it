@@ -63,12 +63,14 @@
   <div class="large-3 small-6 columns">
     <div class="item-wrapper">
       <div class="img-wrapper">
-        <a class="button expand add-to-cart" href="{% url "user_gallery" gallery.user.id gallery.id %}" >{% trans "Watch gallery" %}</a>
+        <a class="button expand add-to-cart show-for-large-up" href="{% url "user_gallery" gallery.user.id gallery.id %}" >{% trans "Watch gallery" %}</a>
         <a href="{% url "user_gallery" gallery.user.id gallery.id %}"><img src="{{ gallery.picture_set.first.picture_medium.url }}"></a>
       </div>  
+      <div class="show-for-large-up">
       <a href="{% url "user_gallery" gallery.user.id gallery.id %}"><h4>{{ gallery.title|truncatechars:25 }}</h4></a>
       <h3><a href="{% url "user_galleries" gallery.user.id %}">{{ gallery.user.username|truncatechars:25 }}</a></h3>
       <p>{% if gallery.description %}{{ gallery.description|truncatechars:25  }}{% else %}{% trans "No description" %}{% endif %}</p>
+    </div>
     </div>  
   </div>
 {% endfor %}
