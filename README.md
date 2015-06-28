@@ -1,4 +1,4 @@
-PicUp It
+PicUp It [![Build Status](https://drone.io/github.com/PicUpIt/picup-it/status.png)](https://drone.io/github.com/PicUpIt/picup-it/latest)
 ========
 
 Introduction
