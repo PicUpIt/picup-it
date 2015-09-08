@@ -11,7 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # BELOW IS A DEFAULT KEY - DIFFERENT THAN https://picup.it/ one.
-SECRET_KEY = '2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%'
+SECRET_KEY = 'test_2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%2CH$NAGEM#3ORdI3%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
